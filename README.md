@@ -2,6 +2,7 @@
 
 [![PIV Methodology](https://img.shields.io/badge/PIV-Prime_Implement_Validate-blue?style=for-the-badge&logo=anthropic)](.claude/PIV-METHODOLOGY.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/galando)
 
 **Universal PIV (Prime-Implement-Validate) methodology skeleton for Claude Code projects**
 
