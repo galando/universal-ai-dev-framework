@@ -35,6 +35,34 @@ Read .claude/agents/context/prime-context.md
 
 This provides the overall codebase context that the plan builds upon.
 
+### 2.5. Verify Feature Branch
+
+**CRITICAL: You MUST be on a feature branch!**
+
+Check current branch:
+```bash
+git branch --show-current
+```
+
+**If on `main` branch:**
+1. **STOP** - Do not implement on main!
+2. Ask user: "Should I create a feature branch for this implementation?"
+3. If approved, create branch:
+   ```bash
+   git checkout -b feature/<feature-name>
+   ```
+4. Then proceed with implementation
+
+**If on feature branch:**
+- ✅ Continue with implementation
+- Verify branch name is descriptive (e.g., `feature/user-auth`, `fix/login-bug`)
+
+**Rationale:**
+- Protects main branch from uncommitted changes
+- Allows for review before merging
+- Facilitates rollback if needed
+- Standard practice for team collaboration
+
 ### 3. Read All Mandatory Files
 
 The plan lists files under "CONTEXT REFERENCES > Relevant Codebase Files (MUST READ!)"
@@ -356,7 +384,7 @@ After implementation completes, the system will **automatically**:
 4. **Ready State** - Stop when all pass
    - Report: "✅ FEATURE COMPLETE - ALL VALIDATIONS PASSED"
    - Summary: Files created, tests added, coverage achieved
-   - Next step: **Run `/commit` to finish**
+   - Next step: **Create pull request for review**
 
 ### What You Need To Do
 
@@ -369,7 +397,39 @@ After implementation completes, the system will **automatically**:
 **When feature is complete:**
 - You'll see: "✅ READY TO COMMIT"
 - Review the summary
-- Run `/commit` to finish
+- **CRITICAL: Follow the commit workflow below**
+
+### Commit Workflow for Feature Branches
+
+**After implementation completes, you are on a feature branch.**
+
+**Step 1: Commit your changes**
+```bash
+/commit
+```
+This will create a commit with all your changes on the feature branch.
+
+**Step 2: Push to remote**
+```bash
+git push -u origin <your-feature-branch>
+```
+
+**Step 3: Create Pull Request**
+```bash
+gh pr create --title "Feature: <brief description>" --body "Summary of changes"
+```
+
+**Step 4: Merge to main (ONLY after review and approval)**
+- ✅ Pull request must be reviewed
+- ✅ All checks must pass
+- ✅ Get explicit approval from maintainer
+- Then merge to main
+
+**IMPORTANT:**
+- ❌ **NEVER** commit directly to main without approval
+- ❌ **NEVER** push directly to main branch
+- ✅ **ALWAYS** use feature branches for implementations
+- ✅ **ALWAYS** create PR for review before merging to main
 
 ### Manual Override (Optional)
 

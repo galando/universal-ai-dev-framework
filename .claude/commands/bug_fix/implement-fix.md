@@ -33,7 +33,35 @@ Implement a bug fix based on a comprehensive Root Cause Analysis.
 - Get specific implementation details
 - Resolve approach decisions
 
-### 2. Create Mini-Plan
+### 2. Verify Feature Branch
+
+**CRITICAL: You MUST be on a feature branch for bug fixes!**
+
+Check current branch:
+```bash
+git branch --show-current
+```
+
+**If on `main` branch:**
+1. **STOP** - Do not implement fixes on main!
+2. Ask user: "Should I create a feature branch for this bug fix?"
+3. If approved, create branch:
+   ```bash
+   git checkout -b fix/issue-{number}-{brief-description}
+   ```
+4. Then proceed with implementation
+
+**If on feature branch:**
+- ✅ Continue with implementation
+- Verify branch name follows convention: `fix/issue-{number}-{description}`
+
+**Rationale:**
+- Protects main branch from untested fixes
+- Allows for review before merging
+- Facilitates rollback if fix introduces issues
+- Enables testing in isolation
+
+### 3. Create Mini-Plan
 
 **Unlike feature development, bug fixes are simpler. Create a mini-plan:**
 
@@ -64,7 +92,7 @@ Implement a bug fix based on a comprehensive Root Cause Analysis.
 
 **Save to:** `.claude/agents/plans/fix-issue-{number}.md`
 
-### 3. Read Context
+### 4. Read Context
 
 **Read necessary context:**
 - Read files to be modified
@@ -77,7 +105,7 @@ Implement a bug fix based on a comprehensive Root Cause Analysis.
 - Read `.claude/rules/20-testing.md` (for tests)
 - Read relevant reference docs from `technologies/*/reference/`
 
-### 4. Implement the Fix
+### 5. Implement the Fix
 
 **Follow the mini-plan:**
 
@@ -103,7 +131,7 @@ Implement a bug fix based on a comprehensive Root Cause Analysis.
 - Update README/docs if behavior changed
 - Add pattern to reference docs (if new pattern)
 
-### 5. Validate
+### 6. Validate
 
 **Run appropriate validation commands for your technology stack:**
 
@@ -133,7 +161,7 @@ npm test
 
 **All validations must pass!**
 
-### 6. Manual Testing
+### 7. Manual Testing
 
 **Test the fix:**
 1. Start development environment
@@ -149,7 +177,7 @@ npm test
 - [ ] No regressions
 - [ ] Ready for commit
 
-### 7. Code Review
+### 8. Code Review
 
 **Run code review:**
 ```
@@ -161,7 +189,7 @@ npm test
 /validation:code-review-fix <review-report>
 ```
 
-### 8. Create Execution Report
+### 9. Create Execution Report
 
 **Generate report:**
 ```
@@ -227,7 +255,39 @@ Provide summary:
 
 **Status:** ✅ READY
 
-**Commit Message:**
+**IMPORTANT: Commit Workflow for Bug Fixes**
+
+You are currently on a **feature branch** for this bug fix. Follow this workflow:
+
+**Step 1: Commit your changes**
+```bash
+/commit
+```
+This will create a commit with all your changes on the feature branch.
+
+**Step 2: Push to remote**
+```bash
+git push -u origin fix/issue-{number}-{description}
+```
+
+**Step 3: Create Pull Request**
+```bash
+gh pr create --title "Fix: Issue #{number} - {brief description}" --body "Fixes #{number}"
+```
+
+**Step 4: Merge to main (ONLY after review and approval)**
+- ✅ Pull request must be reviewed
+- ✅ All tests must pass
+- ✅ Get explicit approval from maintainer
+- Then merge to main
+
+**CRITICAL REMINDERS:**
+- ❌ **NEVER** commit directly to main without approval
+- ❌ **NEVER** push bug fixes directly to main
+- ✅ **ALWAYS** use feature branches for bug fixes
+- ✅ **ALWAYS** create PR for review before merging
+
+**Commit Message Template (for /commit command):**
 ```bash
 fix: [Short description of fix]
 
