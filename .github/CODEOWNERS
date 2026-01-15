@@ -1,0 +1,9 @@
+# Code Owners for claude-dev-framework
+
+# Entire repository is owned by galando
+* @galando
+
+# Specific file patterns can also be defined
+# Example:
+# .claude/** @galando
+# README.md @galando
