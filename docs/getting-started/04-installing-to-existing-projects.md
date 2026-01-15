@@ -1,12 +1,12 @@
 # Installing PIV to Existing Projects
 
-**How to add the PIV methodology to your existing project**
+**How to add the PIV (Prime-Implement-Validate) methodology to your existing project**
 
 ---
 
 ## Overview
 
-This guide walks you through installing the PIV methodology into an existing project. The interactive installer will:
+This guide walks you through installing the PIV (Prime-Implement-Validate) methodology into an existing project. The interactive installer will:
 
 - ✅ **Detect your technology stack** automatically (Spring Boot, React, Node.js, etc.)
 - ✅ **Preserve your existing configuration** (creates automatic backup)
@@ -36,8 +36,8 @@ Before installing, ensure you have:
 ### Method 1: Clone and Run (Recommended)
 
 ```bash
-# 1. Clone the PIV skeleton to a temporary location
-git clone https://github.com/galando/claude-piv-skeleton.git /tmp/piv
+# 1. Clone the PIV framework to a temporary location
+git clone https://github.com/galando/claude-dev-framework.git /tmp/piv
 
 # 2. Navigate to your existing project
 cd /path/to/your-project
@@ -53,20 +53,20 @@ cd /path/to/your-project
 cd /path/to/your-project
 
 # Download and run installer
-curl -sSL https://raw.githubusercontent.com/galando/claude-piv-skeleton/main/scripts/install-piv.sh | bash
+curl -sSL https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/install-piv.sh | bash
 ```
 
 ### Method 3: Copy and Run
 
 ```bash
 # 1. Copy the entire PIV skeleton to your project
-cp -r /path/to/claude-piv-skeleton /tmp/
+cp -r /path/to/claude-dev-framework /tmp/
 
 # 2. Navigate to your project
 cd /path/to/your-project
 
 # 3. Run the installer
-/tmp/claude-piv-skeleton/scripts/install-piv.sh
+/tmp/claude-dev-framework/scripts/install-piv.sh
 ```
 
 ---
@@ -509,7 +509,7 @@ If you want to remove PIV from your project:
 /tmp/piv/scripts/uninstall-piv.sh
 
 # Or download uninstall script
-curl -sSL https://raw.githubusercontent.com/galando/claude-piv-skeleton/main/scripts/uninstall-piv.sh | bash
+curl -sSL https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/uninstall-piv.sh | bash
 ```
 
 The uninstaller will:
@@ -532,4 +532,4 @@ The uninstaller will:
 
 ---
 
-**Questions?** Open an issue on [GitHub](https://github.com/galando/claude-piv-skeleton/issues)
+**Questions?** Open an issue on [GitHub](https://github.com/galando/claude-dev-framework/issues)

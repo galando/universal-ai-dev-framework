@@ -1,8 +1,8 @@
-# Contributing to Claude PIV Skeleton
+# Contributing to Claude Dev Framework
 
 **Thank you for your interest in contributing!**
 
-This project is a community-driven resource for AI-assisted software development using the PIV methodology with Claude Code. We welcome contributions of all kinds.
+This project is a community-driven resource for AI-assisted software development using the PIV (Prime-Implement-Validate) methodology with Claude Code. We welcome contributions of all kinds.
 
 ---
 
@@ -18,7 +18,7 @@ Fix typos, clarify explanations, add examples, improve getting started guides.
 Add real-world implementation examples showing PIV methodology in action.
 
 ### 4. Report Issues
-Found a bug or have a suggestion? [Open an issue](https://github.com/YOUR_USERNAME/claude-piv-skeleton/issues).
+Found a bug or have a suggestion? [Open an issue](https://github.com/YOUR_USERNAME/claude-dev-framework/issues).
 
 ### 5. Submit PRs
 Pull requests are welcome! See below for guidelines.
@@ -30,8 +30,8 @@ Pull requests are welcome! See below for guidelines.
 ### 1. Fork and Clone
 ```bash
 # Fork the repository on GitHub
-git clone https://github.com/YOUR_USERNAME/claude-piv-skeleton.git
-cd claude-piv-skeleton
+git clone https://github.com/YOUR_USERNAME/claude-dev-framework.git
+cd claude-dev-framework
 ```
 
 ### 2. Set Up Your Environment

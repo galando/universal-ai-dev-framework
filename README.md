@@ -1,11 +1,11 @@
-# Claude PIV Skeleton
+# Claude Dev Framework
 
-[![PIV Methodology](https://img.shields.io/badge/PIV-Prime_Implement_Validate-blue?style=for-the-badge&logo=anthropic)](.claude/PIV-METHODOLOGY.md)
+[![Claude Dev Framework](https://img.shields.io/badge/Claude_Dev_Framework-AI_Development-blue?style=for-the-badge&logo=anthropic)](https://github.com/galando/claude-dev-framework)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/galando)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/galando/claude-piv-skeleton)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/galando/claude-dev-framework)
 
-**🌐 Visit the [GitHub Pages landing page](https://galando.github.io/claude-piv-skeleton/) for a visual overview of the PIV methodology.**
+**🌐 Visit the [GitHub Pages landing page](https://galando.github.io/claude-dev-framework/) for a visual overview of the PIV (Prime-Implement-Validate) methodology.**
 
 **Universal PIV (Prime-Implement-Validate) methodology skeleton for Claude Code projects**
 
@@ -15,9 +15,9 @@ A technology-agnostic, extensible skeleton repository for implementing the PIV m
 
 ## What is PIV?
 
-PIV (Prime-Implement-Validate) is a development methodology designed for AI-assisted software development with **strict Test-Driven Development (TDD)**:
+**PIV (Prime-Implement-Validate)** is a development methodology created by **Cole Medin** and designed specifically for AI-assisted software development with **strict Test-Driven Development (TDD)**:
 
-- **Prime**: Load and understand codebase context
+- **Prime**: Load and understand codebase context before making changes
 - **Implement**: Plan features and execute implementation (following RED-GREEN-REFACTOR TDD cycle)
 - **Validate**: Automatically test, verify, and validate (including TDD compliance checks)
 
@@ -34,13 +34,13 @@ This methodology ensures Claude Code has proper context before making changes, c
 The fastest way to add PIV to your existing project:
 
 ```bash
-curl -s https://raw.githubusercontent.com/galando/claude-piv-skeleton/main/scripts/install-piv.sh | bash
+curl -s https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/install-piv.sh | bash
 ```
 
 **Or download and run manually:**
 
 ```bash
-git clone https://github.com/galando/claude-piv-skeleton.git /tmp/piv
+git clone https://github.com/galando/claude-dev-framework.git /tmp/piv
 cd your-project
 /tmp/piv/scripts/install-piv.sh
 ```
@@ -57,7 +57,7 @@ The installer will:
 
 ```bash
 # Clone this repository
-git clone https://github.com/galando/claude-piv-skeleton.git my-project
+git clone https://github.com/galando/claude-dev-framework.git my-project
 cd my-project
 
 # Remove git history to start fresh
@@ -172,7 +172,7 @@ Each template includes:
 ## Repository Structure
 
 ```
-claude-piv-skeleton/
+claude-dev-framework/
 ├── .claude/                     # Claude Code configuration
 │   ├── CLAUDE.md                # Root project instructions
 │   ├── PIV-METHODOLOGY.md       # Core methodology documentation
@@ -297,7 +297,7 @@ We welcome contributions! This skeleton is designed to be community-driven and e
 1. **Add new technologies** - Follow the [Adding Technologies guide](docs/extending/01-adding-technologies.md)
 2. **Improve documentation** - Fix typos, clarify explanations, add examples
 3. **Share examples** - Add real-world implementation examples
-4. **Report issues** - Found a bug or have a suggestion? [Open an issue](https://github.com/galando/claude-piv-skeleton/issues)
+4. **Report issues** - Found a bug or have a suggestion? [Open an issue](https://github.com/galando/claude-dev-framework/issues)
 5. **Submit PRs** - Pull requests are welcome!
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.

@@ -3,96 +3,848 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PIV (Prime-Implement-Validate) methodology skeleton for Claude Code. Universal template with technology-agnostic rules, modular command infrastructure, and comprehensive documentation for AI-assisted software development.">
-    <title>PIV Skeleton - AI-Assisted Development Methodology</title>
+    <meta name="description" content="Claude Dev Framework - AI-assisted development framework for Claude Code with PIV (Prime-Implement-Validate) methodology. Created by Cole Medin.">
+    <title>Claude Dev Framework - AI-Assisted Development</title>
 
-    <!-- Fonts -->
+    <!-- Fonts: Space Grotesk (display) + Manrope (body) + JetBrains Mono (code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Syntax Highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* === RESET & BASE === */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Color Palette */
+            --color-primary: #0066FF;
+            --color-accent: #00D4FF;
+            --color-coral: #FF6B6B;
+            --color-dark: #1A1A1A;
+            --color-gray: #6B7280;
+            --color-light: #F8F9FA;
+            --color-white: #FFFFFF;
+            --color-border: #E5E7EB;
+
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-2xl: 5rem;
+
+            /* Layout */
+            --max-width: 1200px;
+            --header-height: 70px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-dark);
+            background: var(--color-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === LIVING GRID BACKGROUND === */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            background-image:
+                linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* === HEADER === */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .nav {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-gray);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary);
+        }
+
+        .nav-cta {
+            background: var(--color-primary);
+            color: white !important;
+            padding: var(--space-xs) var(--space-md);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: #0052CC;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-dark);
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: calc(var(--header-height) + var(--space-2xl)) var(--space-md) var(--space-2xl);
+            overflow: hidden;
+        }
+
+        .hero-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(0, 102, 255, 0.08);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-md);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--color-dark);
+            margin-bottom: var(--space-md);
+            animation: fadeInUp 0.6s ease-out 0.1s backwards;
+        }
+
+        .hero-title-accent {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-gray);
+            max-width: 600px;
+            margin-bottom: var(--space-lg);
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.3s backwards;
+        }
+
+        .btn {
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--color-coral);
+            color: white;
+            border-color: var(--color-coral);
+        }
+
+        .btn-primary:hover {
+            background: #FF5252;
+            border-color: #FF5252;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 107, 107, 0.2);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--color-dark);
+            border-color: var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        /* === GEOMETRIC SHAPES === */
+        .geometric-shape {
+            position: absolute;
+            border-radius: 20px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            top: 10%;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--color-coral);
+            bottom: 20%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--color-accent);
+            top: 30%;
+            left: 5%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* === SECTIONS === */
+        .section {
+            position: relative;
+            padding: var(--space-2xl) var(--space-md);
+            z-index: 1;
+        }
+
+        .section-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-sm);
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--color-dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--color-gray);
+            max-width: 700px;
+            margin-bottom: var(--space-xl);
+        }
+
+        /* === FEATURES GRID === */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: var(--space-lg);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--color-primary);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 212, 255, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .feature-description {
+            font-size: 0.9375rem;
+            color: var(--color-gray);
+            line-height: 1.7;
+        }
+
+        /* === QUICK START === */
+        .quick-start {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .install-command {
+            background: var(--color-dark);
+            border-radius: 12px;
+            padding: var(--space-md);
+            margin: var(--space-lg) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .install-command::before {
+            content: 'bash';
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            font-family: var(--font-code);
+            font-size: 0.625rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .install-command code {
+            font-family: var(--font-code);
+            font-size: 0.875rem;
+            color: var(--color-accent);
+            word-break: break-all;
+            line-height: 1.8;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .step-card {
+            position: relative;
+            padding-left: var(--space-xl);
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .step-description {
+            font-size: 0.875rem;
+            color: var(--color-gray);
+            margin-bottom: var(--space-sm);
+        }
+
+        .step-command {
+            background: var(--color-light);
+            border-radius: 8px;
+            padding: var(--space-sm);
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--color-primary);
+            overflow-x: auto;
+        }
+
+        /* === COMMANDS SECTION === */
+        .commands-section {
+            background: var(--color-dark);
+            color: white;
+        }
+
+        .commands-section .section-label {
+            color: var(--color-accent);
+        }
+
+        .commands-section .section-title {
+            color: white;
+        }
+
+        .commands-section .section-description {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .command-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            transition: all 0.3s;
+        }
+
+        .command-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--color-primary);
+        }
+
+        .command-code {
+            font-family: var(--font-code);
+            font-size: 0.875rem;
+            color: var(--color-accent);
+            background: rgba(0, 0, 0, 0.3);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+        }
+
+        .command-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: var(--space-xs);
+        }
+
+        .command-description {
+            font-size: 0.9375rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* === DOCUMENTATION LINKS === */
+        .doc-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .doc-category-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .doc-link-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: var(--space-sm);
+        }
+
+        .doc-link-card:hover {
+            border-color: var(--color-primary);
+            transform: translateX(4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .doc-link-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 212, 255, 0.1));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .doc-link-content h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .doc-link-content p {
+            font-size: 0.875rem;
+            color: var(--color-gray);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            background: var(--color-dark);
+            color: white;
+            padding: var(--space-2xl) var(--space-md) var(--space-lg);
+        }
+
+        .footer-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .footer-section h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .footer-attribution {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-attribution a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === ACCESSIBILITY === */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="nav-content">
-                <div class="nav-logo">
-                    <span class="logo-text">PIV Skeleton</span>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#quick-start">Quick Start</a></li>
-                    <li><a href="#commands">Commands</a></li>
-                    <li><a href="#documentation">Documentation</a></li>
-                    <li><a href="https://github.com/galando/claude-piv-skeleton" class="nav-github-link">View on GitHub</a></li>
-                </ul>
-            </div>
-        </nav>
+    <!-- Living Grid Background -->
+    <div class="grid-background"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <span class="logo-mark">C</span>
+                <span>Claude Dev Framework</span>
+            </a>
+            <nav class="nav">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#quick-start" class="nav-link">Quick Start</a>
+                <a href="#commands" class="nav-link">Commands</a>
+                <a href="#documentation" class="nav-link">Documentation</a>
+                <a href="https://github.com/galando/claude-dev-framework" class="nav-link nav-cta">View on GitHub</a>
+            </nav>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+        </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section class="hero" id="hero">
-            <div class="container">
-                <h1>Claude PIV Skeleton</h1>
-                <p class="hero-subtitle">Universal PIV (Prime-Implement-Validate) methodology skeleton for Claude Code</p>
-                <p class="hero-description">
-                    A technology-agnostic, extensible skeleton repository for implementing the PIV methodology with Claude Code.
-                    Provides comprehensive documentation, rules, and templates to accelerate development while maintaining code quality and consistency.
+        <section class="hero">
+            <!-- Geometric Shapes -->
+            <div class="geometric-shape shape-1"></div>
+            <div class="geometric-shape shape-2"></div>
+            <div class="geometric-shape shape-3"></div>
+
+            <div class="hero-container">
+                <span class="hero-badge">✨ AI-Assisted Development Framework</span>
+                <h1 class="hero-title">
+                    Build better software with
+                    <span class="hero-title-accent">Claude Dev Framework</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Universal PIV (Prime-Implement-Validate) methodology created by Cole Medin.
+                    Technology-agnostic, extensible framework with comprehensive documentation,
+                    rules, and templates for AI-assisted development.
                 </p>
-                <div class="cta-group">
-                    <a href="#quick-start" class="btn btn-primary">Get Started</a>
-                    <a href="https://github.com/galando/claude-piv-skeleton" class="btn btn-secondary">View on GitHub</a>
+                <div class="hero-ctas">
+                    <a href="#quick-start" class="btn btn-primary">Get Started →</a>
+                    <a href="https://github.com/galando/claude-dev-framework" class="btn btn-secondary">View on GitHub</a>
                 </div>
             </div>
         </section>
 
         <!-- Features Section -->
-        <section class="section section-alt" id="features">
-            <div class="container">
-                <h2 class="section-title">Why PIV?</h2>
-                <p class="section-subtitle">A complete methodology for AI-assisted software development with strict Test-Driven Development</p>
+        <section class="section" id="features">
+            <div class="section-container">
+                <span class="section-label">Why PIV?</span>
+                <h2 class="section-title">A complete methodology for AI-assisted development</h2>
+                <p class="section-description">Everything you need to build high-quality software with Claude Code, from strict TDD enforcement to automatic validation.</p>
 
-                <div class="grid grid-3">
-                    <div class="feature-card">
+                <div class="features-grid">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">🚨</div>
-                        <h3>Strict Test-Driven Development</h3>
-                        <p>MANDATORY TDD with RED-GREEN-REFACTOR cycle. Zero tolerance policy - code written before tests will be deleted. Skills enforce TDD in real-time.</p>
+                        <h3 class="feature-title">Strict Test-Driven Development</h3>
+                        <p class="feature-description">MANDATORY TDD with RED-GREEN-REFACTOR cycle. Zero tolerance policy - code written before tests will be deleted. Skills enforce TDD in real-time.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">⚡</div>
-                        <h3>Skills System: Auto-Activating Behaviors</h3>
-                        <p>Real-time enforcement based on file patterns and commands. TDD, test-writing, API design, security, and code-review skills enhance development.</p>
+                        <h3 class="feature-title">Skills System: Auto-Activating Behaviors</h3>
+                        <p class="feature-description">Real-time enforcement based on file patterns and commands. TDD, test-writing, API design, security, and code-review skills enhance development.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">🔧</div>
-                        <h3>Technology Agnostic Core</h3>
-                        <p>Universal PIV methodology applicable to any technology stack. Modular design allows picking only what you need. Progressive enhancement.</p>
+                        <h3 class="feature-title">Technology Agnostic Core</h3>
+                        <p class="feature-description">Universal PIV methodology applicable to any technology stack. Modular design allows picking only what you need. Progressive enhancement.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">📏</div>
-                        <h3>Modular Rules System</h3>
-                        <p>Universal rules apply to all projects (git, testing, documentation, strict TDD). Technology rules auto-load based on your stack.</p>
+                        <h3 class="feature-title">Modular Rules System</h3>
+                        <p class="feature-description">Universal rules apply to all projects (git, testing, documentation, strict TDD). Technology rules auto-load based on your stack.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">⚙️</div>
-                        <h3>Command Infrastructure</h3>
-                        <p>Standardized Claude Code commands for PIV workflow: prime, plan-feature, execute, validation, bug fixes, and more.</p>
+                        <h3 class="feature-title">Command Infrastructure</h3>
+                        <p class="feature-description">Standardized Claude Code commands for PIV workflow: prime, plan-feature, execute, validation, bug fixes, and more.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal">
                         <div class="feature-icon">🎨</div>
-                        <h3>Technology Templates</h3>
-                        <p>Pre-built templates for Spring Boot, Node.js/Express, Python/FastAPI, React, PostgreSQL, and Docker with best practices.</p>
+                        <h3 class="feature-title">Technology Templates</h3>
+                        <p class="feature-description">Pre-built templates for Spring Boot, Node.js/Express, Python/FastAPI, React, PostgreSQL, and Docker with best practices.</p>
                     </div>
                 </div>
             </div>
@@ -100,202 +852,244 @@
 
         <!-- Quick Start Section -->
         <section class="section" id="quick-start">
-            <div class="container">
-                <h2 class="section-title">Quick Start</h2>
-                <p class="section-subtitle">Get started in 5 minutes</p>
+            <div class="section-container">
+                <span class="section-label">Quick Start</span>
+                <h2 class="section-title">Get started in 5 minutes</h2>
+                <p class="section-description">Install the framework and start building with PIV methodology in minutes.</p>
 
-                <div class="install-section">
-                    <h3>🚀 One-Line Install (Existing Projects)</h3>
-                    <p class="install-description">The fastest way to add PIV to your existing project:</p>
-                    <pre><code class="language-bash">curl -s https://raw.githubusercontent.com/galando/claude-piv-skeleton/main/scripts/install-piv.sh | bash</code></pre>
-                </div>
-
-                <div class="quick-start-steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Prime</h3>
-                            <p>Load context and prime workspace</p>
-                            <pre><code class="language-bash">/piv_loop:prime</code></pre>
-                        </div>
+                <div class="quick-start reveal">
+                    <h3 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: var(--space-md);">🚀 One-Line Install</h3>
+                    <div class="install-command">
+                        <code>curl -s https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/install-piv.sh | bash</code>
                     </div>
 
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Implement</h3>
-                            <p>Plan features and execute implementation (following TDD)</p>
-                            <pre><code class="language-bash">/piv_loop:plan-feature "Add user authentication"
-/piv_loop:execute</code></pre>
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h4 class="step-title">Prime</h4>
+                            <p class="step-description">Load context and prime workspace</p>
+                            <div class="step-command">/piv_loop:prime</div>
                         </div>
-                    </div>
 
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Validate</h3>
-                            <p>Automatic validation runs after execute</p>
-                            <pre><code class="language-bash"># Runs automatically - no manual step needed!</code></pre>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h4 class="step-title">Implement</h4>
+                            <p class="step-description">Plan features and execute implementation (following TDD)</p>
+                            <div class="step-command">/piv_loop:plan-feature "Add user authentication"<br>/piv_loop:execute</div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h4 class="step-title">Validate</h4>
+                            <p class="step-description">Automatic validation runs after execute</p>
+                            <div class="step-command"># Runs automatically - no manual step needed!</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Code Examples Section -->
-        <section class="section section-alt" id="commands">
-            <div class="container">
-                <h2 class="section-title">PIV Commands</h2>
-                <p class="section-subtitle">Essential commands for AI-assisted development</p>
+        <!-- Commands Section -->
+        <section class="section commands-section" id="commands">
+            <div class="section-container">
+                <span class="section-label">Commands</span>
+                <h2 class="section-title">Essential commands for AI-assisted development</h2>
+                <p class="section-description">Core PIV commands that power your development workflow.</p>
 
-                <div class="command-cards">
-                    <div class="command-card">
-                        <div class="command-code">
-                            <pre><code class="language-bash">/piv_loop:prime</code></pre>
-                        </div>
-                        <div class="command-description">
-                            <h3>Prime Context</h3>
-                            <p>Load codebase context and understanding. Run at the start of each session or when switching contexts.</p>
-                        </div>
-                    </div>
+                <div class="command-card reveal">
+                    <code class="command-code">/piv_loop:prime</code>
+                    <h4 class="command-title">Prime Context</h4>
+                    <p class="command-description">Load codebase context and understanding. Run at the start of each session or when switching contexts.</p>
+                </div>
 
-                    <div class="command-card">
-                        <div class="command-code">
-                            <pre><code class="language-bash">/piv_loop:plan-feature "description"</code></pre>
-                        </div>
-                        <div class="command-description">
-                            <h3>Create Implementation Plan</h3>
-                            <p>Create detailed implementation plan with deep codebase analysis. Use for complex features or refactoring.</p>
-                        </div>
-                    </div>
+                <div class="command-card reveal">
+                    <code class="command-code">/piv_loop:plan-feature "description"</code>
+                    <h4 class="command-title">Create Implementation Plan</h4>
+                    <p class="command-description">Create detailed implementation plan with deep codebase analysis. Use for complex features or refactoring.</p>
+                </div>
 
-                    <div class="command-card">
-                        <div class="command-code">
-                            <pre><code class="language-bash">/piv_loop:execute</code></pre>
-                        </div>
-                        <div class="command-description">
-                            <h3>Execute Plan</h3>
-                            <p>Execute implementation plan following strict TDD. Automatic validation runs after completion.</p>
-                        </div>
-                    </div>
+                <div class="command-card reveal">
+                    <code class="command-code">/piv_loop:execute</code>
+                    <h4 class="command-title">Execute Plan</h4>
+                    <p class="command-description">Execute implementation plan following strict TDD. Automatic validation runs after completion.</p>
+                </div>
 
-                    <div class="command-card">
-                        <div class="command-code">
-                            <pre><code class="language-bash">/validation:validate</code></pre>
-                        </div>
-                        <div class="command-description">
-                            <h3>Run Validation</h3>
-                            <p>Run full validation pipeline (automatic after execute). Includes environment check, compilation, tests, coverage.</p>
-                        </div>
-                    </div>
+                <div class="command-card reveal">
+                    <code class="command-code">/validation:validate</code>
+                    <h4 class="command-title">Run Validation</h4>
+                    <p class="command-description">Run full validation pipeline (automatic after execute). Includes environment check, compilation, tests, coverage.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Documentation Links Section -->
+        <!-- Documentation Section -->
         <section class="section" id="documentation">
-            <div class="container">
-                <h2 class="section-title">Documentation</h2>
-                <p class="section-subtitle">Comprehensive guides and documentation</p>
+            <div class="section-container">
+                <span class="section-label">Documentation</span>
+                <h2 class="section-title">Comprehensive guides and documentation</h2>
+                <p class="section-description">Everything you need to master the PIV methodology and build amazing software.</p>
 
                 <div class="doc-categories">
-                    <div class="doc-category">
-                        <h3>Getting Started</h3>
-                        <div class="grid grid-2">
-                            <a href="https://github.com/galando/claude-piv-skeleton#quick-start" class="doc-link-card">
-                                <div class="doc-link-icon">📖</div>
+                    <div>
+                        <h3 class="doc-category-title">Getting Started</h3>
+                        <a href="https://github.com/galando/claude-dev-framework#quick-start" class="doc-link-card">
+                            <div class="doc-link-icon">📖</div>
+                            <div class="doc-link-content">
                                 <h4>Quick Start</h4>
                                 <p>Get started in 5 minutes</p>
-                            </a>
-                            <a href="https://github.com/galando/claude-piv-skeleton#your-first-feature" class="doc-link-card">
-                                <div class="doc-link-icon">🎯</div>
+                            </div>
+                        </a>
+                        <a href="https://github.com/galando/claude-dev-framework#your-first-feature" class="doc-link-card">
+                            <div class="doc-link-icon">🎯</div>
+                            <div class="doc-link-content">
                                 <h4>Your First Feature</h4>
                                 <p>Walkthrough of first feature</p>
-                            </a>
-                            <a href="https://github.com/galando/claude-piv-skeleton/blob/main/docs/FAQ.md" class="doc-link-card">
-                                <div class="doc-link-icon">❓</div>
+                            </div>
+                        </a>
+                        <a href="https://github.com/galando/claude-dev-framework/blob/main/docs/FAQ.md" class="doc-link-card">
+                            <div class="doc-link-icon">❓</div>
+                            <div class="doc-link-content">
                                 <h4>FAQ</h4>
                                 <p>Frequently asked questions</p>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
 
-                    <div class="doc-category">
-                        <h3>Methodology</h3>
-                        <div class="grid grid-2">
-                            <a href="https://github.com/galando/claude-piv-skeleton/blob/main/.claude/PIV-METHODOLOGY.md" class="doc-link-card">
-                                <div class="doc-link-icon">📚</div>
+                    <div>
+                        <h3 class="doc-category-title">Methodology</h3>
+                        <a href="https://github.com/galando/claude-dev-framework/blob/main/.claude/PIV-METHODOLOGY.md" class="doc-link-card">
+                            <div class="doc-link-icon">📚</div>
+                            <div class="doc-link-content">
                                 <h4>PIV Methodology</h4>
                                 <p>Complete methodology guide</p>
-                            </a>
-                            <a href="https://github.com/galando/claude-piv-skeleton/blob/main/.claude/CLAUDE.md" class="doc-link-card">
-                                <div class="doc-link-icon">⚙️</div>
+                            </div>
+                        </a>
+                        <a href="https://github.com/galando/claude-dev-framework/blob/main/.claude/CLAUDE.md" class="doc-link-card">
+                            <div class="doc-link-icon">⚙️</div>
+                            <div class="doc-link-content">
                                 <h4>Project Instructions</h4>
                                 <p>Quick reference for Claude Code</p>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
 
-                    <div class="doc-category">
-                        <h3>Contributing</h3>
-                        <div class="grid grid-2">
-                            <a href="https://github.com/galando/claude-piv-skeleton/blob/main/CONTRIBUTING.md" class="doc-link-card">
-                                <div class="doc-link-icon">🤝</div>
+                    <div>
+                        <h3 class="doc-category-title">Contributing</h3>
+                        <a href="https://github.com/galando/claude-dev-framework/blob/main/CONTRIBUTING.md" class="doc-link-card">
+                            <div class="doc-link-icon">🤝</div>
+                            <div class="doc-link-content">
                                 <h4>Contributing Guidelines</h4>
-                                <p>How to contribute to the skeleton</p>
-                            </a>
-                            <a href="https://github.com/galando/claude-piv-skeleton/issues" class="doc-link-card">
-                                <div class="doc-link-icon">🐛</div>
+                                <p>How to contribute to the framework</p>
+                            </div>
+                        </a>
+                        <a href="https://github.com/galando/claude-dev-framework/issues" class="doc-link-card">
+                            <div class="doc-link-icon">🐛</div>
+                            <div class="doc-link-content">
                                 <h4>Issue Tracker</h4>
                                 <p>Report bugs and request features</p>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://github.com/galando/claude-piv-skeleton">GitHub Repository</a></li>
-                        <li><a href="https://github.com/galando/claude-piv-skeleton/blob/main/LICENSE">MIT License</a></li>
-                        <li><a href="https://github.com/galando/claude-piv-skeleton/issues">Issue Tracker</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Community</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://github.com/galando/claude-piv-skeleton/blob/main/CONTRIBUTING.md">Contributing Guidelines</a></li>
-                        <li><a href="https://buymeacoffee.com/galando">Buy Me A Coffee</a></li>
-                        <li><a href="https://deepwiki.com/galando/claude-piv-skeleton">Ask DeepWiki</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Attribution</h4>
-                    <p class="footer-attribution">
-                        The PIV Methodology was created by <a href="https://github.com/coleam00">Cole Medin</a>
-                    </p>
-                    <p class="footer-attribution">
-                        Made with ❤️ for the Claude Code community
-                    </p>
-                </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Links</h4>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/galando/claude-dev-framework">GitHub Repository</a></li>
+                    <li><a href="https://github.com/galando/claude-dev-framework/blob/main/LICENSE">MIT License</a></li>
+                    <li><a href="https://github.com/galando/claude-dev-framework/issues">Issue Tracker</a></li>
+                </ul>
             </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2025 Claude PIV Skeleton. MIT License.</p>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/galando/claude-dev-framework/blob/main/CONTRIBUTING.md">Contributing Guidelines</a></li>
+                    <li><a href="https://buymeacoffee.com/galando">Buy Me A Coffee</a></li>
+                    <li><a href="https://deepwiki.com/galando/claude-dev-framework">Ask DeepWiki</a></li>
+                </ul>
             </div>
+
+            <div class="footer-section">
+                <h4>Attribution</h4>
+                <p class="footer-attribution">
+                    The PIV Methodology was created by <a href="https://github.com/coleam00">Cole Medin</a>
+                </p>
+                <p class="footer-attribution">
+                    Made with ❤️ for the Claude Code community
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Claude Dev Framework. MIT License.</p>
         </div>
     </footer>
 
     <!-- Syntax Highlighting JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+
+    <script>
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('.nav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = getComputedStyle(nav).display === 'none';
+            if (isHidden) {
+                nav.style.display = 'flex';
+                nav.style.position = 'absolute';
+                nav.style.top = '100%';
+                nav.style.left = '0';
+                nav.style.right = '0';
+                nav.style.flexDirection = 'column';
+                nav.style.background = 'white';
+                nav.style.padding = 'var(--space-md)';
+                nav.style.borderTop = '1px solid var(--color-border)';
+            } else {
+                nav.style.display = '';
+                nav.style.position = '';
+                nav.style.flexDirection = '';
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
