@@ -162,6 +162,10 @@
                 border-bottom: 1px solid #333333;
             }
 
+            :root:not([data-theme="light"]) .nav-cta:hover {
+                background: #4A7FD4;
+            }
+
             :root:not([data-theme="light"]) .btn-secondary {
                 background: #2A2A2A;
                 color: #F0F0F0;
@@ -181,6 +185,15 @@
             :root:not([data-theme="light"]) .install-command {
                 background: #0D0D0D;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            }
+
+            :root:not([data-theme="light"]) .command-card {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            :root:not([data-theme="light"]) .command-card:hover {
+                background: rgba(255, 255, 255, 0.06);
             }
         }
 
@@ -268,7 +281,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #FFFFFF;
             font-size: 0.9rem;
             font-weight: 700;
         }
@@ -294,7 +307,7 @@
 
         .nav-cta {
             background: var(--color-primary);
-            color: white !important;
+            color: #FFFFFF !important;
             padding: var(--space-xs) var(--space-md);
             border-radius: 8px;
             transition: background 0.2s;
@@ -302,6 +315,10 @@
 
         .nav-cta:hover {
             background: #0052CC;
+        }
+
+        [data-theme="dark"] .nav-cta:hover {
+            background: #4A7FD4;
         }
 
         .theme-toggle {
@@ -417,7 +434,7 @@
 
         .btn-primary {
             background: var(--color-coral);
-            color: white;
+            color: #FFFFFF;
             border-color: var(--color-coral);
         }
 
@@ -429,7 +446,7 @@
         }
 
         .btn-secondary {
-            background: white;
+            background: var(--color-white);
             color: var(--color-dark);
             border-color: var(--color-border);
         }
@@ -526,7 +543,7 @@
         }
 
         .feature-card {
-            background: white;
+            background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 16px;
             padding: var(--space-lg);
@@ -585,7 +602,7 @@
 
         /* === QUICK START === */
         .quick-start {
-            background: white;
+            background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 20px;
             padding: var(--space-xl);
@@ -743,7 +760,7 @@
         /* === COMMANDS SECTION === */
         .commands-section {
             background: var(--color-dark);
-            color: white;
+            color: #FFFFFF;
         }
 
         .commands-section .section-label {
@@ -751,7 +768,7 @@
         }
 
         .commands-section .section-title {
-            color: white;
+            color: #FFFFFF;
         }
 
         .commands-section .section-description {
@@ -787,13 +804,22 @@
             font-family: var(--font-display);
             font-size: 1.125rem;
             font-weight: 600;
-            color: white;
+            color: #FFFFFF;
             margin-bottom: var(--space-xs);
         }
 
         .command-description {
             font-size: 0.9375rem;
             color: rgba(255, 255, 255, 0.7);
+        }
+
+        [data-theme="dark"] .command-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="dark"] .command-card:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
 
         /* === DOCUMENTATION LINKS === */
@@ -816,7 +842,7 @@
             align-items: flex-start;
             gap: var(--space-md);
             padding: var(--space-md);
-            background: white;
+            background: var(--color-white);
             border: 1px solid var(--color-border);
             border-radius: 12px;
             text-decoration: none;
@@ -858,7 +884,7 @@
         /* === FOOTER === */
         .footer {
             background: var(--color-dark);
-            color: white;
+            color: #FFFFFF;
             padding: var(--space-2xl) var(--space-md) var(--space-lg);
         }
 
