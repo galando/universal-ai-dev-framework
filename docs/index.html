@@ -117,6 +117,28 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
 
+        /* Additional dark theme fixes for hardcoded colors */
+        [data-theme="dark"] .hero-badge {
+            background: rgba(91, 141, 239, 0.15);
+            border-color: rgba(91, 141, 239, 0.3);
+        }
+
+        [data-theme="dark"] .feature-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] .feature-icon {
+            background: linear-gradient(135deg, rgba(91, 141, 239, 0.15), rgba(77, 225, 255, 0.15));
+        }
+
+        [data-theme="dark"] .doc-link-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .doc-link-icon {
+            background: linear-gradient(135deg, rgba(91, 141, 239, 0.15), rgba(77, 225, 255, 0.15));
+        }
+
         /* System preference detection */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) {
@@ -194,6 +216,28 @@
 
             :root:not([data-theme="light"]) .command-card:hover {
                 background: rgba(255, 255, 255, 0.06);
+            }
+
+            /* Additional dark theme fixes for hardcoded colors */
+            :root:not([data-theme="light"]) .hero-badge {
+                background: rgba(91, 141, 239, 0.15);
+                border-color: rgba(91, 141, 239, 0.3);
+            }
+
+            :root:not([data-theme="light"]) .feature-card:hover {
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+
+            :root:not([data-theme="light"]) .feature-icon {
+                background: linear-gradient(135deg, rgba(91, 141, 239, 0.15), rgba(77, 225, 255, 0.15));
+            }
+
+            :root:not([data-theme="light"]) .doc-link-card:hover {
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+
+            :root:not([data-theme="light"]) .doc-link-icon {
+                background: linear-gradient(135deg, rgba(91, 141, 239, 0.15), rgba(77, 225, 255, 0.15));
             }
         }
 
