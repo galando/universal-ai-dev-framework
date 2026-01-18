@@ -137,9 +137,9 @@ First official release of the universal PIV (Prime-Implement-Validate) methodolo
 
 ## Links
 
-- **GitHub**: https://github.com/galando/claude-piv-skeleton
-- **Issues**: https://github.com/galando/claude-piv-skeleton/issues
-- **Discussions**: https://github.com/galando/claude-piv-skeleton/discussions
+- **GitHub**: https://github.com/galando/claude-dev-framework
+- **Issues**: https://github.com/galando/claude-dev-framework/issues
+- **Discussions**: https://github.com/galando/claude-dev-framework/discussions
 - **Cole Medin's Work**: https://github.com/coleam00
 
 ---
