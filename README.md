@@ -100,6 +100,79 @@ curl -s https://raw.githubusercontent.com/galando/universal-ai-dev-framework/mai
 
 ---
 
+## 🎬 See It In Action
+
+**Watch PIV power a real feature from start to finish:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USER: "/piv:prime"                                                     │
+│                                                                          │
+│  CLAUDE: [Loads project context]                                         │
+│    → "Project: Spring Boot + React + PostgreSQL"                        │
+│    → "Architecture: Controller → Service → Repository"                 │
+│    → "15 Java classes, 8 React components identified"                  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USER: "/piv:plan-feature Add password reset flow"                    │
+│                                                                          │
+│  CLAUDE: [Loads from .claude/reference/methodology/]                    │
+│    → Reads PIV-METHODOLOGY.md for planning steps                        │
+│    → [Loads from technologies/backend/spring-boot/]                      │
+│    → Reads security patterns, email templates                           │
+│    → Creates implementation plan...                                      │
+│    → Plan saved to .claude/agents/plans/                               │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USER: "/piv:execute"                                                   │
+│                                                                          │
+│  CLAUDE: [test-driven-development SKILL ACTIVATES 🔴]                    │
+│    → "🔴 RED: Writing test FIRST..."                                     │
+│    → Creates PasswordResetServiceTest.java                             │
+│    → Test FAILS ✅                                                       │
+│                                                                          │
+│    → "🟢 GREEN: Writing minimal code..."                                │
+│    → Creates PasswordResetService.java                                │
+│    → Test PASSES ✅                                                       │
+│                                                                          │
+│    → "🔵 REFACTOR: Improving..."                                       │
+│    → Extracts EmailService to separate class                             │
+│    → Tests STILL PASS ✅                                                 │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  [validation:code-review SKILL ACTIVATES]                              │
+│                                                                          │
+│  CLAUDE: [Reviews code, references .claude/rules/security.md]            │
+│    → "✅ Uses bcrypt for password hashing"                              │
+│    → "✅ Token expires in 1 hour"                                       │
+│    → "⚠️  Suggestion: Add rate limiting"                                 │
+│    → Report saved to .claude/agents/code-reviews/                       │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  [validation:learn SKILL ACTIVATES]                                    │
+│                                                                          │
+│  CLAUDE: [Extracts learning from review]                                 │
+│    → "Pattern captured: Always set token expiration to 1 hour"          │
+│    → "Pattern captured: Use bcrypt for password hashing"                │
+│    → Saves to .claude/agents/learnings/                                │
+│                                                                          │
+│  → Next security feature: "Based on past learnings, I'll use           │
+│     bcrypt and 1-hour expiration..."                                   │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**This is the PIV difference:**
+- ✅ **Active enforcement** - Skills activate in real-time
+- ✅ **Captures learning** - Framework gets smarter
+- ✅ **Technology-aware** - Loads patterns from `technologies/`
+- ✅ **Full trace** - Every step recorded and reviewable
+
+---
+
 ## Documentation
 
 | Guide | Description |

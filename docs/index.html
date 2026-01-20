@@ -510,6 +510,19 @@
             transform: translateY(-2px);
         }
 
+        .btn-link {
+            background: transparent;
+            color: var(--color-gray);
+            border: 2px solid transparent;
+            padding: var(--space-sm) var(--space-lg);
+        }
+
+        .btn-link:hover {
+            border-color: var(--color-border);
+            color: var(--color-dark);
+            transform: translateY(-2px);
+        }
+
         /* === GEOMETRIC SHAPES === */
         .geometric-shape {
             position: absolute;
@@ -939,6 +952,166 @@
             color: var(--color-gray);
         }
 
+        /* === SEE IT IN ACTION === */
+        .action-trace {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .trace-step {
+            padding: var(--space-md);
+            border-left: 3px solid var(--color-border);
+            margin-bottom: var(--space-lg);
+            transition: all 0.3s;
+        }
+
+        .trace-step:hover {
+            border-left-color: var(--color-primary);
+            background: rgba(0, 102, 255, 0.02);
+        }
+
+        .trace-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .trace-badge {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .trace-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin: 0;
+        }
+
+        .trace-content {
+            padding-left: var(--space-md);
+        }
+
+        .trace-command {
+            background: var(--color-dark);
+            color: var(--color-accent);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: var(--space-md);
+        }
+
+        .trace-response {
+            font-size: 0.9375rem;
+            color: var(--color-gray);
+            line-height: 1.8;
+        }
+
+        .trace-response code {
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--color-primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.85em;
+        }
+
+        .trace-loading {
+            color: var(--color-primary);
+            font-style: italic;
+        }
+
+        .skill-activation {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(91, 141, 239, 0.1), rgba(77, 225, 255, 0.1));
+            color: var(--color-primary);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .action-summary {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.05), rgba(0, 212, 255, 0.05));
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            border-radius: 16px;
+            padding: var(--space-lg);
+        }
+
+        .action-summary h3 {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            font-size: 0.9375rem;
+            color: var(--color-dark);
+        }
+
+        .summary-icon {
+            flex-shrink: 0;
+            font-size: 1.25rem;
+        }
+
+        /* Dark theme for action section */
+        [data-theme="dark"] .action-trace {
+            background: var(--color-white);
+            border-color: var(--color-border);
+        }
+
+        [data-theme="dark"] .trace-title {
+            color: var(--color-dark);
+        }
+
+        [data-theme="dark"] .trace-response {
+            color: var(--color-gray);
+        }
+
+        [data-theme="dark"] .trace-response code {
+            background: rgba(91, 141, 239, 0.15);
+            color: var(--color-primary);
+        }
+
+        [data-theme="dark"] .action-summary {
+            background: linear-gradient(135deg, rgba(91, 141, 239, 0.08), rgba(77, 225, 255, 0.08));
+            border-color: rgba(91, 141, 239, 0.2);
+        }
+
+        [data-theme="dark"] .action-summary h3 {
+            color: var(--color-dark);
+        }
+
+        [data-theme="dark"] .summary-item {
+            color: var(--color-dark);
+        }
+
         /* === FOOTER === */
         .footer {
             background: #1A1A1A;
@@ -1087,6 +1260,7 @@
             <nav class="nav">
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#quick-start" class="nav-link">Quick Start</a>
+                <a href="#see-it-in-action" class="nav-link">See It In Action</a>
                 <a href="#commands" class="nav-link">Commands</a>
                 <a href="#documentation" class="nav-link">Documentation</a>
                 <a href="https://github.com/galando/universal-ai-dev-framework" class="nav-link nav-cta">View on GitHub</a>
@@ -1120,7 +1294,8 @@
                 </p>
                 <div class="hero-ctas">
                     <a href="#quick-start" class="btn btn-primary">Get Started →</a>
-                    <a href="https://github.com/galando/universal-ai-dev-framework" class="btn btn-secondary">View on GitHub</a>
+                    <a href="#see-it-in-action" class="btn btn-secondary">See It In Action →</a>
+                    <a href="https://github.com/galando/universal-ai-dev-framework" class="btn btn-link">View on GitHub</a>
                 </div>
             </div>
         </section>
@@ -1229,6 +1404,128 @@
                             <h4 class="step-title">Validate</h4>
                             <p class="step-description">Automatic validation runs after execute</p>
                             <div class="step-command"># Runs automatically - no manual step needed!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- See It In Action Section -->
+        <section class="section" id="see-it-in-action">
+            <div class="section-container">
+                <span class="section-label">See It In Action</span>
+                <h2 class="section-title">Watch PIV power a real feature from start to finish</h2>
+                <p class="section-description">See how the framework guides AI-assisted development with active enforcement, context loading, and adaptive learning.</p>
+
+                <div class="action-trace reveal">
+                    <div class="trace-step">
+                        <div class="trace-header">
+                            <span class="trace-badge">STEP 1</span>
+                            <h4 class="trace-title">Prime Context</h4>
+                        </div>
+                        <div class="trace-content">
+                            <div class="trace-command">/piv:prime</div>
+                            <div class="trace-response">
+                                <strong>Claude:</strong> <span class="trace-loading">Loading project context...</span><br>
+                                → Project: Spring Boot + React + PostgreSQL<br>
+                                → Architecture: Controller → Service → Repository<br>
+                                → 15 Java classes, 8 React components identified
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trace-step">
+                        <div class="trace-header">
+                            <span class="trace-badge">STEP 2</span>
+                            <h4 class="trace-title">Create Plan</h4>
+                        </div>
+                        <div class="trace-content">
+                            <div class="trace-command">/piv:plan-feature "Add password reset flow"</div>
+                            <div class="trace-response">
+                                <strong>Claude:</strong> <span class="trace-loading">Creating implementation plan...</span><br>
+                                → Loads PIV-METHODOLOGY.md for planning steps<br>
+                                → Loads Spring Boot security patterns from <code>technologies/</code><br>
+                                → Loads PostgreSQL schema patterns<br>
+                                → Plan saved to <code>.claude/agents/plans/</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trace-step">
+                        <div class="trace-header">
+                            <span class="trace-badge">STEP 3</span>
+                            <h4 class="trace-title">Execute with TDD</h4>
+                        </div>
+                        <div class="trace-content">
+                            <div class="trace-command">/piv:execute</div>
+                            <div class="trace-response">
+                                <span class="skill-activation">🔴 test-driven-development SKILL ACTIVATES</span><br><br>
+                                <strong>🔴 RED:</strong> Writing test FIRST...<br>
+                                → Creates <code>PasswordResetServiceTest.java</code><br>
+                                → Test FAILS ✅<br><br>
+                                <strong>🟢 GREEN:</strong> Writing minimal code...<br>
+                                → Creates <code>PasswordResetService.java</code><br>
+                                → Test PASSES ✅<br><br>
+                                <strong>🔵 REFACTOR:</strong> Improving...<br>
+                                → Extracts <code>EmailService</code> to separate class<br>
+                                → Tests STILL PASS ✅
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trace-step">
+                        <div class="trace-header">
+                            <span class="trace-badge">STEP 4</span>
+                            <h4 class="trace-title">Auto Code Review</h4>
+                        </div>
+                        <div class="trace-content">
+                            <div class="trace-response">
+                                <span class="skill-activation">validation:code-review SKILL ACTIVATES</span><br><br>
+                                <strong>Claude:</strong> Reviewing code...<br>
+                                → ✅ Uses bcrypt for password hashing<br>
+                                → ✅ Token expires in 1 hour<br>
+                                → ⚠️ Suggestion: Add rate limiting<br>
+                                → Report saved to <code>.claude/agents/code-reviews/</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trace-step">
+                        <div class="trace-header">
+                            <span class="trace-badge">STEP 5</span>
+                            <h4 class="trace-title">Capture Learning</h4>
+                        </div>
+                        <div class="trace-content">
+                            <div class="trace-response">
+                                <span class="skill-activation">validation:learn SKILL ACTIVATES</span><br><br>
+                                <strong>Claude:</strong> Extracting patterns from review...<br>
+                                → Pattern: Token expiration = 1 hour<br>
+                                → Pattern: Use bcrypt for passwords<br>
+                                → Saves to <code>.claude/agents/learnings/</code><br><br>
+                                <em>Next security feature: "Based on past learnings, I'll use bcrypt and 1-hour expiration..."</em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-summary reveal">
+                    <h3 style="font-family: var(--font-display); font-size: 1.125rem; margin-bottom: var(--space-md);">This is the PIV difference</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-icon">✅</span>
+                            <span>Active enforcement - Skills activate in real-time</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-icon">✅</span>
+                            <span>Captures learning - Framework gets smarter</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-icon">✅</span>
+                            <span>Technology-aware - Loads patterns from templates</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-icon">✅</span>
+                            <span>Full trace - Every step recorded and reviewable</span>
                         </div>
                     </div>
                 </div>
