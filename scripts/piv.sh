@@ -20,6 +20,7 @@ readonly SCRIPT_VERSION="1.1.0"
 # PIV_VERSION is reserved for future use (will support installing specific versions from remote)
 PIV_VERSION="${PIV_VERSION:-latest}"
 PINNED_VERSION=""
+PIV_TAG=""  # Specific git tag to install from
 DRY_RUN=false
 FORCE=false
 WANT_VERSION=false
@@ -49,12 +50,21 @@ if [ -z "${BASH_SOURCE+x}" ] || [ "${BASH_SOURCE[0]}" = "bash" ] || [ "${BASH_SO
         exit 1
     fi
 
-    # Clone repository
+    # Clone repository (from specific tag if requested)
     echo "Downloading from GitHub..."
-    if ! git clone --depth 1 -q https://github.com/galando/claude-dev-framework.git "$TEMP_DIR" 2>/dev/null; then
-        echo "Error: Failed to download"
-        rm -rf "$TEMP_DIR"
-        exit 1
+    if [ -n "$PIV_TAG" ]; then
+        echo "Fetching tag: $PIV_TAG"
+        if ! git clone --depth 1 --branch "$PIV_TAG" -q https://github.com/galando/claude-dev-framework.git "$TEMP_DIR" 2>/dev/null; then
+            echo "Error: Failed to download tag '$PIV_TAG'"
+            rm -rf "$TEMP_DIR"
+            exit 1
+        fi
+    else
+        if ! git clone --depth 1 -q https://github.com/galando/claude-dev-framework.git "$TEMP_DIR" 2>/dev/null; then
+            echo "Error: Failed to download"
+            rm -rf "$TEMP_DIR"
+            exit 1
+        fi
     fi
 
     # Change to original directory
@@ -110,6 +120,7 @@ Usage: $SCRIPT_NAME [OPTIONS]
 Unified PIV installer and updater. Auto-detects install vs update.
 
 OPTIONS:
+    --tag vX.Y.Z       Install from specific release tag (e.g., v1.1.0)
     --version X.Y.Z    Pin to specific version
     --pin              Remember version for future updates
     --dry-run          Show changes without applying
@@ -120,6 +131,9 @@ OPTIONS:
 EXAMPLES:
     # Fresh install or update (auto-detected)
     curl -s https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/piv.sh | bash
+
+    # Install specific release
+    curl -s https://raw.githubusercontent.com/galando/claude-dev-framework/main/scripts/piv.sh | bash -s -- --tag v1.1.0
 
     # Pin to version 1.1.0
     bash piv.sh --version 1.1.0 --pin
@@ -145,6 +159,14 @@ EOF
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --tag=*)
+            PIV_TAG="${1#*=}"
+            shift
+            ;;
+        --tag)
+            PIV_TAG="$2"
+            shift 2
+            ;;
         --version=*)
             PIV_VERSION="${1#*=}"
             PINNED_VERSION="$PIV_VERSION"
@@ -186,7 +208,7 @@ if [ "$WANT_VERSION" = true ]; then
 fi
 
 # Export options for subshells
-export DRY_RUN FORCE AUTO_CONFIRM PINNED_VERSION
+export DRY_RUN FORCE AUTO_CONFIRM PINNED_VERSION PIV_TAG
 
 ################################################################################
 # MAIN FLOW
