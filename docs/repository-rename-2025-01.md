@@ -14,11 +14,11 @@ This repository has been renamed from **claude-piv-skeleton** to **universal-ai-
 ### Repository Name
 - **Old**: `claude-piv-skeleton`
 - **New**: `universal-ai-dev-framework`
-- **URL**: https://github.com/galando/universal-ai-dev-framework
+- **URL**: https://github.com/galando/piv-speckit
 
 ### GitHub Pages
 - **Old URL**: https://galando.github.io/claude-piv-skeleton/
-- **New URL**: https://galando.github.io/universal-ai-dev-framework/
+- **New URL**: https://galando.github.io/piv-speckit/
 
 ### Documentation Updates
 - All repository URLs updated throughout documentation
@@ -43,7 +43,7 @@ If you have a local clone of this repository, update your remote URL:
 
 ```bash
 cd claude-piv-skeleton  # or your local directory name
-git remote set-url origin https://github.com/galando/universal-ai-dev-framework.git
+git remote set-url origin https://github.com/galando/piv-speckit.git
 git fetch origin
 ```
 
@@ -58,7 +58,7 @@ If you've referenced this repository in documentation, you can update the URLs a
 git clone https://github.com/galando/claude-piv-skeleton.git
 
 # New (preferred)
-git clone https://github.com/galando/universal-ai-dev-framework.git
+git clone https://github.com/galando/piv-speckit.git
 ```
 
 ## Rationale

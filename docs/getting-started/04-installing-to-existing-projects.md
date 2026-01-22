@@ -62,7 +62,7 @@ Before installing, ensure you have:
 
 ```bash
 # Clone first (if you want to inspect the script)
-git clone https://github.com/galando/universal-ai-dev-framework.git /tmp/piv
+git clone https://github.com/galando/piv-speckit.git /tmp/piv
 cd /path/to/your-project
 /tmp/piv/scripts/piv.sh
 
@@ -546,4 +546,4 @@ The uninstaller will:
 
 ---
 
-**Questions?** Open an issue on [GitHub](https://github.com/galando/universal-ai-dev-framework/issues)
+**Questions?** Open an issue on [GitHub](https://github.com/galando/piv-speckit/issues)

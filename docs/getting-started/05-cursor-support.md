@@ -140,4 +140,4 @@ Cursor: "I'll create a RESTful controller following API design rules.
 
 - [PIV Methodology](../../.claude/reference/methodology/PIV-METHODOLOGY.md) - Complete guide
 - [Quick Start](02-quick-start.md) - Get started in 5 minutes
-- [GitHub Repository](https://github.com/galando/universal-ai-dev-framework) - Source code
+- [GitHub Repository](https://github.com/galando/piv-speckit) - Source code

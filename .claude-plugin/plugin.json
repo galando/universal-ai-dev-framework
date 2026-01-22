@@ -6,8 +6,8 @@
     "name": "Universal AI Dev Framework",
     "url": "https://github.com/galando/universal-ai-dev-framework"
   },
-  "repository": "https://github.com/galando/universal-ai-dev-framework",
-  "homepage": "https://galando.github.io/universal-ai-dev-framework/",
+  "repository": "https://github.com/galando/piv-speckit",
+  "homepage": "https://galando.github.io/piv-speckit/",
   "license": "MIT",
   "keywords": ["piv", "speckit", "spec-kit", "tdd", "methodology", "spec-driven"],
   "commands": [

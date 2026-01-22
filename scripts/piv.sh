@@ -9,7 +9,7 @@ set -euo pipefail
 ################################################################################
 
 readonly SCRIPT_VERSION="2.0.0"
-readonly REPO_URL="https://github.com/galando/universal-ai-dev-framework"
+readonly REPO_URL="https://github.com/galando/piv-speckit"
 readonly REPO_NAME="universal-ai-dev-framework"
 
 # User options

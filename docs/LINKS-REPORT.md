@@ -2,9 +2,9 @@
 
 Generated: Sun Jan 18 12:26:05 CET 2026
 
-🌐 [README.md] https://github.com/galando/universal-ai-dev-framework (external link - not validated)
+🌐 [README.md] https://github.com/galando/piv-speckit (external link - not validated)
 ✅ [README.md] LICENSE
-🌐 [README.md] https://galando.github.io/universal-ai-dev-framework/ (external link - not validated)
+🌐 [README.md] https://galando.github.io/piv-speckit/ (external link - not validated)
 🌐 [README.md] https://buymeacoffee.com/galando (external link - not validated)
 🌐 [README.md] https://deepwiki.com/galando/universal-ai-dev-framework (external link - not validated)
 ✅ [README.md] .claude/reference/methodology/PIV-METHODOLOGY.md

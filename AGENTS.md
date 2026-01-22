@@ -1,4 +1,4 @@
-<!-- Universal AI Dev Framework - https://github.com/galando/universal-ai-dev-framework -->
+<!-- Universal AI Dev Framework - https://github.com/galando/piv-speckit -->
 # Universal AI Dev Framework - Agent Instructions
 
 > PIV: Prime → Implement → Validate methodology for AI-assisted development
@@ -148,5 +148,5 @@ Types: feat, fix, docs, refactor, test, chore
 
 ---
 
-*Universal AI Dev Framework - https://github.com/galando/universal-ai-dev-framework*
+*Universal AI Dev Framework - https://github.com/galando/piv-speckit*
 *Works with: Claude Code, Cursor, GitHub Copilot, OpenAI Codex, and 20+ AI tools*

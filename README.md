@@ -1,8 +1,8 @@
 # Universal AI Dev Framework
 
-[![Universal AI Dev Framework](https://img.shields.io/badge/Universal_AI_Dev-Framework-blue?style=for-the-badge)](https://github.com/galando/universal-ai-dev-framework)
+[![PIV Spec-Kit](https://img.shields.io/badge/PIV_Spec--Kit-Framework-blue?style=for-the-badge)](https://github.com/galando/piv-speckit)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Visual Guide](https://img.shields.io/badge/🌐_Visual_Guide-Interactive-467fd9?style=for-the-badge)](https://galando.github.io/universal-ai-dev-framework/)
+[![Visual Guide](https://img.shields.io/badge/🌐_Visual_Guide-Interactive-467fd9?style=for-the-badge)](https://galando.github.io/piv-speckit/)
 [![Inspired by Spec-Kit](https://img.shields.io/badge/Inspired_By-Spec--Kit-blue?style=for-the-badge)](https://github.com/github/spec-kit)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/galando)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/galando/universal-ai-dev-framework)
