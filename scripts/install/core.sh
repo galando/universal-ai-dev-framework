@@ -400,9 +400,9 @@ This project uses the **PIV (Prime-Implement-Validate)** methodology for AI-assi
 
 ## Quick Start
 
-1. **Prime**: Load context with \`/piv-speckit:prime\`
-2. **Plan**: Create plan with \`/piv-speckit:plan-feature "description"\`
-3. **Execute**: Implement with \`/piv-speckit:execute\` (auto-validates)
+1. **Prime**: Load context with \`/piv_loop:prime\`
+2. **Plan**: Create plan with \`/piv_loop:plan-feature "description"\`
+3. **Execute**: Implement with \`/piv_loop:execute\` (auto-validates)
 
 ## Documentation
 
