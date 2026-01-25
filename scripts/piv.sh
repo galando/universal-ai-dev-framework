@@ -16,6 +16,7 @@ readonly REPO_NAME="universal-ai-dev-framework"
 PIV_TAG=""
 DRY_RUN=false
 AUTO_CONFIRM=false
+TOOL=""  # cursor | copilot | (empty = all)
 
 # Working directory
 ORIGINAL_DIR="$(pwd)"
@@ -93,23 +94,27 @@ print_usage() {
     cat << EOF
 Usage: piv.sh [OPTIONS]
 
-Universal AI Dev Framework installer for Cursor and other AI tools.
+Universal AI Dev Framework installer for Cursor and Copilot.
 
 OPTIONS:
+    --tool <name>      Install for specific tool: cursor | copilot
     --tag vX.Y.Z       Install from specific release tag (e.g., v1.0.0)
     --dry-run          Show changes without applying
     --help             Show this help message
     -v, --version      Show version information
 
 EXAMPLES:
-    # Fresh install
+    # Install for Cursor only
+    curl -s $REPO_URL/raw/main/scripts/piv.sh | bash -s -- --tool cursor
+
+    # Install for Copilot only
+    curl -s $REPO_URL/raw/main/scripts/piv.sh | bash -s -- --tool copilot
+
+    # Install all tool configurations
     curl -s $REPO_URL/raw/main/scripts/piv.sh | bash
 
-    # Install specific release
-    curl -s $REPO_URL/raw/main/scripts/piv.sh | bash -s -- --tag v1.0.0
-
-    # Preview changes without applying
-    bash piv.sh --dry-run
+    # Install specific release for Cursor
+    curl -s $REPO_URL/raw/main/scripts/piv.sh | bash -s -- --tool cursor --tag v2.0.0
 
 For Claude Code full experience:
     /plugin marketplace add galando/piv-speckit/marketplace
@@ -132,6 +137,14 @@ EOF
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --tool=*)
+            TOOL="$(echo "${1#*=}" | tr '[:upper:]' '[:lower:]')"
+            shift
+            ;;
+        --tool)
+            TOOL="$(echo "$2" | tr '[:upper:]' '[:lower:]')"
+            shift 2
+            ;;
         --tag=*)
             PIV_TAG="${1#*=}"
             shift
@@ -159,6 +172,15 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Validate tool option if provided
+if [[ -n "$TOOL" && "$TOOL" != "cursor" && "$TOOL" != "copilot" ]]; then
+    echo "Error: Invalid tool '$TOOL'"
+    echo "Supported tools: cursor, copilot"
+    echo ""
+    print_usage
+    exit 1
+fi
 
 ################################################################################
 # BANNER
@@ -216,24 +238,30 @@ main() {
     print_banner
     confirm_install
 
+    # Show selected tool if specified
+    if [[ -n "$TOOL" ]]; then
+        echo "🔧 Tool: $TOOL"
+    fi
+    echo ""
     echo "📦 Installing Universal AI Dev Framework..."
     echo ""
 
-    # 1. Generate AGENTS.md (for all AI tools)
+    # 1. Generate AGENTS.md (always - for all AI tools)
     echo "📄 Generating AGENTS.md..."
     generate_agents_md "$target_dir/AGENTS.md"
 
-    # 2. Generate .cursor/rules/ (for Cursor users)
-    echo ""
-    echo "📁 Generating .cursor/rules/..."
-    generate_cursor_rules "$target_dir"
+    # 2. Generate tool-specific rules
+    if [[ -z "$TOOL" || "$TOOL" == "cursor" ]]; then
+        echo ""
+        echo "📁 Generating .cursor/rules/..."
+        generate_cursor_rules "$target_dir"
+    fi
 
-    # 3. Generate .github/copilot-instructions.md (for Copilot users)
-    echo ""
-    echo "📁 Generating .github/copilot-instructions.md..."
-    generate_copilot_instructions "$target_dir"
-
-    # 4. Generate .specs/.templates/ and constitution template
+    if [[ -z "$TOOL" || "$TOOL" == "copilot" ]]; then
+        echo ""
+        echo "📁 Generating .github/copilot-instructions.md..."
+        generate_copilot_instructions "$target_dir"
+    fi
 
     # 3. Generate .specs/.templates/ and constitution template
     echo ""
@@ -246,8 +274,15 @@ main() {
     echo "════════════════════════════════════════════════════════════════════"
     echo ""
     echo "📄 AGENTS.md              - Core PIV methodology (auto-loaded)"
-    echo "📁 .cursor/rules/         - Auto-attach rules for Cursor"
-    echo "📁 .github/copilot-instructions.md - Auto-load rules for Copilot"
+
+    # Show installed tool files
+    if [[ -z "$TOOL" || "$TOOL" == "cursor" ]]; then
+        echo "📁 .cursor/rules/         - Auto-attach rules for Cursor"
+    fi
+    if [[ -z "$TOOL" || "$TOOL" == "copilot" ]]; then
+        echo "📁 .github/copilot-instructions.md - Auto-load rules for Copilot"
+    fi
+
     echo "📁 .specs/.templates/     - Spec, plan, and task templates"
     echo "📄 constitution.template.md - Project constitution template"
     echo ""
@@ -263,8 +298,12 @@ main() {
     echo "   • Execute: \"Implement tasks.md using TDD\""
     echo ""
     echo "📚 Guides:"
-    echo "   • Cursor:  $REPO_URL/blob/main/docs/getting-started/06-cursor-guide.md"
-    echo "   • Copilot: $REPO_URL/blob/main/docs/getting-started/07-copilot-guide.md"
+    if [[ -z "$TOOL" || "$TOOL" == "cursor" ]]; then
+        echo "   • Cursor:  $REPO_URL/blob/main/docs/getting-started/06-cursor-guide.md"
+    fi
+    if [[ -z "$TOOL" || "$TOOL" == "copilot" ]]; then
+        echo "   • Copilot: $REPO_URL/blob/main/docs/getting-started/07-copilot-guide.md"
+    fi
     echo ""
 }
 
