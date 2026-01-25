@@ -1,6 +1,6 @@
 ---
 description: PIV TDD enforcement for test files
-globs: ["*Test*", "*.test.*", "*_test.*", "*.spec.*", "*Spec*"]
+globs: ["*.test.*", "*.spec.*", "__tests__/*", "test/*", "tests/*"]
 alwaysApply: false
 ---
 
