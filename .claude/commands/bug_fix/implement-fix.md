@@ -9,13 +9,29 @@ argument-hint: "<path-to-rca-document>"
 
 Read RCA document: `$ARGUMENTS`
 
-**Example:** `.claude/agents/reviews/rca-123-bug-title.md`
+**Examples:**
+- GitHub: `.claude/agents/reviews/rca-123-bug-title.md`
+- Jira: `.claude/agents/reviews/rca-PROJ-123-bug-title.md`
+- Direct: `.claude/agents/reviews/rca-20250126-143052-bug-title.md`
 
 ## Purpose
 
 Implement a bug fix based on a comprehensive Root Cause Analysis.
 
 **Process:** Use systematic approach for bug fixing
+
+## Issue Tracker Detection
+
+**Read the RCA to extract issue tracker information:**
+
+Look for these fields in the RCA:
+- **Tracker:** GitHub | Jira | Direct
+- **Issue Key:** #123 or PROJ-123 or (none)
+
+**Read formatter for branch/commit patterns:**
+```bash
+Read .claude/lib/issue-tracker/formatter.md
+```
 
 ## Implementation Process
 
@@ -45,15 +61,25 @@ git branch --show-current
 **If on `main` branch:**
 1. **STOP** - Do not implement fixes on main!
 2. Ask user: "Should I create a feature branch for this bug fix?"
-3. If approved, create branch:
+3. If approved, create branch using the appropriate format:
    ```bash
+   # GitHub format:
    git checkout -b fix/issue-{number}-{brief-description}
+
+   # Jira format:
+   git checkout -b fix/{JIRA_KEY}-{brief-description}
+
+   # Direct format:
+   git checkout -b fix/{brief-description}
    ```
 4. Then proceed with implementation
 
 **If on feature branch:**
 - ✅ Continue with implementation
-- Verify branch name follows convention: `fix/issue-{number}-{description}`
+- Verify branch name follows convention:
+  - **GitHub:** `fix/issue-{number}-{description}`
+  - **Jira:** `fix/{JIRA_KEY}-{description}`
+  - **Direct:** `fix/{description}`
 
 **Rationale:**
 - Protects main branch from untested fixes
@@ -66,7 +92,7 @@ git branch --show-current
 **Unlike feature development, bug fixes are simpler. Create a mini-plan:**
 
 ```markdown
-# Fix Plan: Issue #{number}
+# Fix Plan: {ISSUE_KEY}
 
 ## Root Cause
 [From RCA]
@@ -90,7 +116,12 @@ git branch --show-current
 [From RCA]
 ```
 
-**Save to:** `.claude/agents/plans/fix-issue-{number}.md`
+**Save to:** `.claude/agents/plans/fix-{ISSUE_KEY}.md`
+
+**Where `{ISSUE_KEY}` is:**
+- GitHub: `issue-123`
+- Jira: `PROJ-123`
+- Direct: `{timestamp}-{description}`
 
 ### 4. Read Context
 
@@ -209,9 +240,14 @@ Provide summary:
 
 ### Issue Fixed
 
-**Issue:** #{number} - [Title]
+**Issue:** {ISSUE_KEY} - [Title]
 **Root Cause:** [From RCA]
 **Fix Applied:** [Description]
+
+**Where `{ISSUE_KEY}` is:**
+- GitHub: `#123`
+- Jira: `PROJ-123`
+- Direct: `(no issue key)`
 
 ### Files Modified
 
@@ -267,12 +303,35 @@ This will create a commit with all your changes on the feature branch.
 
 **Step 2: Push to remote**
 ```bash
-git push -u origin fix/issue-{number}-{description}
+# GitHub or Jira (with GitHub repo):
+git push -u origin fix/{ISSUE_KEY}-{description}
+
+# Examples:
+# GitHub: git push -u origin fix/issue-123-login-fail
+# Jira: git push -u origin fix/PROJ-123-login-fail
 ```
 
 **Step 3: Create Pull Request**
+
+**For GitHub issues:**
 ```bash
 gh pr create --title "Fix: Issue #{number} - {brief description}" --body "Fixes #{number}"
+```
+
+**For Jira tickets (with GitHub repo):**
+```bash
+# Create PR with Jira key in title
+gh pr create --title "Fix: {JIRA_KEY} - {brief description}" --body "Fixes {JIRA_KEY}"
+
+# OR manually create PR via GitHub UI
+# Jira's GitHub integration will link the PR to the ticket
+```
+
+**For Jira tickets (without GitHub PR):**
+```bash
+# No automatic PR creation
+# Push the branch and manually create PR if needed
+# Update Jira ticket status manually
 ```
 
 **Step 4: Merge to main (ONLY after review and approval)**
@@ -285,13 +344,39 @@ gh pr create --title "Fix: Issue #{number} - {brief description}" --body "Fixes 
 - ❌ **NEVER** commit directly to main without approval
 - ❌ **NEVER** push bug fixes directly to main
 - ✅ **ALWAYS** use feature branches for bug fixes
-- ✅ **ALWAYS** create PR for review before merging
+- ✅ **ALWAYS** create PR for review before merging (GitHub)
 
 **Commit Message Template (for /commit command):**
+
+**For GitHub issues:**
 ```bash
 fix: [Short description of fix]
 
 Fixes #{number}
+
+[Detailed description of the fix]
+
+Root cause:
+[From RCA]
+
+Changes:
+- [Change 1]
+- [Change 2]
+
+Tests:
+- [Test 1]
+- [Test 2]
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+```
+
+**For Jira tickets:**
+```bash
+fix: [Short description of fix]
+
+Fixes {JIRA_KEY}
 
 [Detailed description of the fix]
 

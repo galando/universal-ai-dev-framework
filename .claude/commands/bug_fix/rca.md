@@ -1,9 +1,34 @@
 ---
-description: Root Cause Analysis for GitHub issues or direct bug descriptions
-argument-hint: "<github-issue-url-or-number | \"direct:<bug-description>\">"
+description: Root Cause Analysis for GitHub issues, Jira tickets, or direct bug descriptions
+argument-hint: "<github-issue-url-or-number | JIRA-123 | \"direct:<bug-description>\">"
 ---
 
 # Root Cause Analysis (RCA)
+
+## Issue Tracker Detection
+
+**First, detect the issue tracker type from `$ARGUMENTS`:**
+
+**Read detection logic:**
+```bash
+Read .claude/lib/issue-tracker/detector.md
+```
+
+**Auto-detected formats:**
+
+| Input Format | Detected Tracker | Example |
+|--------------|------------------|---------|
+| `https://github.com/org/repo/issues/123` | GitHub | Full URL |
+| `#123` or `123` | GitHub | Hash prefix or plain number |
+| `PROJ-123` | Jira | Standard Jira key |
+| `PROJ-123@https://jira.example.com` | Jira | Jira key with custom instance |
+| `jira:PROJ-123` | Jira | Explicit jira: prefix |
+| `direct:<description>` | Direct | No tracker |
+
+**Set these variables for use throughout RCA:**
+- `$TRACKER_TYPE` - "github" | "jira" | "direct"
+- `$ISSUE_KEY` - Issue identifier (PROJ-123 or 123)
+- `$JIRA_INSTANCE` - Jira base URL (if applicable)
 
 ## Bug Source
 
@@ -13,9 +38,15 @@ Determine the source and analyze accordingly:
 ```
 $ARGUMENTS
 ```
-Example: `https://github.com/your-org/repo/issues/123` or just `123`
+Example: `https://github.com/your-org/repo/issues/123` or just `123` or `#123`
 
-**Option 2: Direct Bug Description**
+**Option 2: Jira Ticket**
+```
+$ARGUMENTS
+```
+Example: `PROJ-123`, `PROJ-123@https://jira.example.com`, or `jira:PROJ-123`
+
+**Option 3: Direct Bug Description**
 ```
 direct:Bug description here
 ```
@@ -31,7 +62,19 @@ Create a comprehensive Root Cause Analysis document for a bug or issue.
 
 ### 1. Understand the Issue
 
-**If analyzing a GitHub Issue:**
+**Read tracker-specific operations:**
+```bash
+# GitHub operations
+Read .claude/lib/issue-tracker/github.md
+
+# Jira operations
+Read .claude/lib/issue-tracker/jira.md
+
+# Formatter for branch/commit patterns
+Read .claude/lib/issue-tracker/formatter.md
+```
+
+**If analyzing a GitHub Issue (`$TRACKER_TYPE = "github"`):**
 - Issue title and number
 - Issue description
 - Steps to reproduce
@@ -39,9 +82,22 @@ Create a comprehensive Root Cause Analysis document for a bug or issue.
 - Actual behavior
 - Screenshots/logs if provided
 - Labels, milestones, assignee
-- Use `gh issue view <number>` to get full issue details
+- Use `gh issue view $ISSUE_NUMBER --json title,body,state,labels,comments` to get full issue details
 
-**If analyzing a direct bug description:**
+**If analyzing a Jira Ticket (`$TRACKER_TYPE = "jira"`):**
+- Issue key and summary
+- Issue description
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Attachments/screenshots if provided
+- Priority, status, assignee
+- **Fetch using (in order of preference):**
+  1. **MCP Server** (if available): Use Jira MCP tools
+  2. **jira-cli** (fallback): `jira issue view "$ISSUE_KEY" --plain`
+  3. **Manual** (graceful degradation): Proceed with issue key only, gather context manually
+
+**If analyzing a direct bug description (`$TRACKER_TYPE = "direct"`):**
 - Parse the bug description from user input
 - Ask clarifying questions if needed:
   - What is the expected behavior?
@@ -190,17 +246,21 @@ find backend/src/main/java -name "*Service.java"
 
 ### 8. RCA Report
 
-**Save RCA to:** `.claude/agents/reviews/rca-{issue-number}-{title}.md`
+**Save RCA to:**
+- **GitHub:** `.claude/agents/reviews/rca-{issue-number}-{title}.md`
+- **Jira:** `.claude/agents/reviews/rca-{JIRA_KEY}-{title}.md`
+- **Direct:** `.claude/agents/reviews/rca-{timestamp}-{title}.md`
 
 **Report Structure:**
 
 ```markdown
-# Root Cause Analysis: Issue #{number}
+# Root Cause Analysis: {ISSUE_KEY}
 
 **Date:** [Timestamp]
 **Issue:** {Title}
 **Severity:** {Critical/High/Medium/Low}
 **Status:** In Progress
+**Tracker:** {GitHub/Jira/Direct}
 
 ## Issue Summary
 

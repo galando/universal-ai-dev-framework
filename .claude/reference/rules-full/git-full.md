@@ -15,11 +15,25 @@ main          ← Production-ready code
 ```
 
 ### Branch Naming
+
+#### Standard Format
 - `feature/feature-name` - New features
-- `fix/bug-description` - Bug fixes
+- `fix/bug-description` - Bug fixes (direct)
 - `hotfix/critical-fix` - Urgent production fixes
 - `docs/update-description` - Documentation changes
 - `refactor/component-name` - Refactoring
+
+#### Issue Tracker Format
+When working with issues from a tracker:
+
+**GitHub:**
+- `fix/issue-{number}-{description}` - Bug fixes
+- Example: `fix/issue-123-login-fail`
+
+**Jira:**
+- `fix/{JIRA_KEY}-{description}` - Bug fixes
+- Example: `fix/PROJ-123-login-fail`
+- Example: `fix/ABC-456-memory-leak`
 
 ### Branch Rules
 - **NEVER** commit directly to main (ALL changes must go through PR process)
@@ -86,6 +100,8 @@ type(scope): description
 | `perf` | Performance improvements | `perf(query): optimize database query` |
 
 ### Good Commit Messages
+
+#### GitHub Issue References
 ✅ **Good**:
 ```
 feat(auth): add JWT token refresh mechanism
@@ -109,6 +125,40 @@ fix(database): resolve connection pool exhaustion
 Fixes #456
 ```
 
+#### Jira Ticket References
+✅ **Good**:
+```
+feat(auth): add JWT token refresh mechanism
+
+- Implement refresh token endpoint
+- Add token rotation for security
+- Update authentication middleware
+- Include unit tests
+
+Closes PROJ-123
+```
+
+✅ **Good**:
+```
+fix(database): resolve connection pool exhaustion
+
+- Increase max connections in pool
+- Add connection timeout handling
+- Implement connection retry logic
+
+Fixes PROJ-456
+```
+
+#### Direct Bug Reports (No Issue Reference)
+✅ **Good**:
+```
+fix(database): resolve connection pool exhaustion
+
+- Increase max connections in pool
+- Add connection timeout handling
+- Implement connection retry logic
+```
+
 ❌ **Bad**:
 ```
 update stuff
@@ -123,7 +173,9 @@ wip
 - **SEPARATE** body from subject with blank line
 - **WRAP** body at 72 characters
 - **EXPLAIN** what and why, not how
-- **REFERENCE** issues in footer (Closes #123, Fixes #456)
+- **REFERENCE** issues in footer:
+  - GitHub: `Closes #123`, `Fixes #456`, `Resolves #789`
+  - Jira: `Closes PROJ-123`, `Fixes PROJ-456`, `Resolves PROJ-789`
 
 ---
 
@@ -267,6 +319,18 @@ Total: 2-4 commits (one per phase)
 
 ## Related Issues
 Closes #123
+```
+
+**For Jira tickets, use the Jira key:**
+```markdown
+## Related Issues
+Fixes PROJ-123
+```
+
+**For mixed GitHub + Jira environments:**
+```markdown
+## Related Issues
+Fixes PROJ-123 (gh#456)
 ```
 
 ### PR Guidelines
