@@ -924,20 +924,11 @@
 
                 <div class="methodology-grid">
                     <div class="methodology-card">
-                        <span class="methodology-number">00</span>
-                        <div class="methodology-icon">📜</div>
-                        <h3 class="methodology-title">Constitution</h3>
-                        <p class="methodology-description">
-                            Define project principles once. These principles guide all future development decisions, ensuring consistency across AI-assisted features.
-                        </p>
-                    </div>
-
-                    <div class="methodology-card">
                         <span class="methodology-number">01</span>
                         <div class="methodology-icon">💡</div>
                         <h3 class="methodology-title">Prime</h3>
                         <p class="methodology-description">
-                            Load codebase context before making changes. Understand existing patterns, architecture, and conventions. Smart context loading reduces token usage while maximizing understanding.
+                            <strong>v3.0: Auto-prime</strong> - Context loads automatically when planning. Understand existing patterns, architecture, and conventions. Smart context loading reduces token usage while maximizing understanding.
                         </p>
                     </div>
 
@@ -1017,11 +1008,11 @@
 <br>
 <span class="comment"># Prime your workspace</span>
 <br>
-<span class="command">/piv-speckit:prime</span>
-<br>
-<span class="comment"># Plan your feature</span>
+<span class="comment"># Plan your feature (auto-primes context)</span>
 <br>
 <span class="command">/piv-speckit:plan-feature "Add user auth"</span>
+<br>
+<span class="comment"># → Auto-prime: Context loaded automatically</span>
 <br>
 <span class="comment"># Planning complete. Artifacts created:</span>
 <br>

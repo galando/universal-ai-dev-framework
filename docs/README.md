@@ -45,13 +45,15 @@
 
 | Command | Purpose |
 |---------|---------|
-| `/piv-speckit:prime` | Load context |
-| `/piv-speckit:plan-feature "desc"` | Create plan |
+| `/piv-speckit:plan-feature "desc"` | Create plan (auto-primes context) |
 | `/piv-speckit:execute` | Implement from plan |
+| `/piv-speckit:prime` | Force context refresh (optional) |
 | `/piv-speckit:validate` | Run validation |
 | `/piv-speckit:learn` | Extract learnings |
 | `/piv-speckit:learning-status` | View metrics |
 | `/piv-speckit:code-review` | Technical review |
+
+**NEW in v3.0:** `plan-feature` now auto-primes silently - no separate prime step needed!
 
 [→ Complete commands reference](../.claude/commands/)
 
@@ -94,4 +96,4 @@
 
 ---
 
-**Last Updated:** 2025-01-25
+**Last Updated:** 2025-01-28 (v3.0 - Auto-Prime)
