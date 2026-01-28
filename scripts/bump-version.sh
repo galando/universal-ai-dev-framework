@@ -25,11 +25,9 @@ Example:
 
 Files updated:
   - VERSION (single source of truth)
-  - .claude-plugin/plugin.json
-  - scripts/piv.sh
-  - .github/copilot-instructions.md
-  - AGENTS.md
-  - .cursor/rules/*
+
+Note: All other files read VERSION dynamically (scripts/piv.sh, .cursor/rules/*, AGENTS.md).
+Note: .claude-plugin/plugin.json uses __VERSION__ placeholder (replaced during install/release).
 EOF
 }
 
@@ -77,20 +75,6 @@ bump_version() {
     # Update VERSION file (single source of truth)
     echo "$new_version" > "$VERSION_FILE"
 
-    # Update .claude-plugin/plugin.json
-    local plugin_json="$SCRIPT_DIR/../.claude-plugin/plugin.json"
-    if [ -f "$plugin_json" ]; then
-        # Use sed for cross-platform compatibility (macOS & Linux)
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS
-            sed -i '' "s/\"version\": \".*\"/\"version\": \"$new_version\"/" "$plugin_json"
-        else
-            # Linux
-            sed -i "s/\"version\": \".*\"/\"version\": \"$new_version\"/" "$plugin_json"
-        fi
-        echo "Updated: .claude-plugin/plugin.json = $new_version"
-    fi
-
     echo ""
     echo "════════════════════════════════════════════════════════════════════"
     echo "✅ Version bump complete!"
@@ -98,7 +82,6 @@ bump_version() {
     echo ""
     echo "Updated files:"
     echo "  - VERSION = $new_version"
-    echo "  - .claude-plugin/plugin.json = $new_version"
     echo ""
     echo "Files that read VERSION dynamically:"
     echo "  - scripts/piv.sh: reads VERSION at runtime"
