@@ -20,10 +20,9 @@
 
 | Command | Purpose |
 |---------|---------|
-| `/piv-speckit:constitution` | Create project principles (one-time) |
-| `/piv-speckit:prime` | Load context |
-| `/piv-speckit:plan-feature "X"` | Plan feature X |
+| `/piv-speckit:plan-feature "X"` | Plan feature X (auto-primes context) |
 | `/piv-speckit:execute` | Implement plan |
+| `/piv-speckit:prime` | Manually refresh context (optional) |
 | `/piv-speckit:validate` | Run validation |
 | `/piv-speckit:code-review` | Review code |
 | `/piv-speckit:learn` | Capture learnings |
@@ -42,8 +41,7 @@
 ## Workflow
 
 ```
-PRIME → Load context
-PLAN → Design approach (complex features only)
+PLAN → Design approach (auto-loads context)
 IMPLEMENT → Write tests first, then code
 VALIDATE → Runs automatically
 ```
@@ -58,4 +56,4 @@ VALIDATE → Runs automatically
 
 ---
 
-**PIV Version:** 2.0 | **Claude Code Plugin Available**
+**PIV Version:** 3.0 | **Claude Code Plugin Available**

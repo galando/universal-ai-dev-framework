@@ -7,6 +7,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.0.0] - 2026-01-28
+
+### 🎉 Zero-Setup: Auto-Prime in plan-feature
+
+Major simplification of the PIV workflow. Users now need only one command to start planning — context loading happens automatically.
+
+### ⚠️ Breaking Changes
+
+- **`/piv-speckit:constitution` removed**: Project principles now come from `.claude/CLAUDE.md` + `.claude/rules/` (which Claude Code loads automatically). No separate constitution step needed.
+- **`/piv-speckit:prime` is now optional**: Plan-feature auto-primes silently. Manual prime only needed to force a context refresh.
+
+### ✨ Added
+
+#### Phase 0: Auto-Prime (NEW)
+- `/piv-speckit:plan-feature` now auto-loads/refreshes codebase context silently before planning
+- Checks context freshness: age (<7 days) and git changes (<20 files since last prime)
+- If stale or missing: runs full prime scan automatically
+- If fresh: skips, proceeds directly to planning
+
+#### Reference-Based Context Format
+- New context file format uses file references instead of code dumps
+- ~50% token savings compared to old monolithic format
+- Context points to files with line numbers and grep commands for discovery
+
+### 🔄 Changed
+
+- **Workflow simplified**: 3 steps → 1 step before planning
+  - Before: `/constitution` → `/prime` → `/plan-feature`
+  - After: `/plan-feature` (does everything)
+- **Prime command**: Now optional, use for force-refresh or debugging
+- **Context source**: CLAUDE.md + rules/ replace constitution.md
+- **Methodology docs**: Updated to reflect auto-prime workflow
+
+### ❌ Removed
+
+- `/piv-speckit:constitution` command
+- `.claude/memory/constitution.md` and `.claude/memory/constitution.template.md`
+
+### 📚 Documentation
+
+- Updated PIV-METHODOLOGY.md with Phase 0: Auto-Prime
+- Updated README workflow diagrams
+- Updated CLAUDE.md quick commands table
+- Updated all references to constitution and manual prime
+
+### ✅ Backward Compatibility
+
+- **Legacy constitution.md support:** If `.claude/memory/constitution.md` exists (from v2.x), auto-prime reads it and merges principles with CLAUDE.md + rules/
+- Old prime-context.md files still work
+- All other commands unchanged
+
+### 🔧 Configurable
+
+- **Freshness thresholds:** Override defaults in CLAUDE.md:
+  - `prime_max_age_days: 7` (default)
+  - `prime_max_changed_files: 20` (default)
+
+### 🛡️ Robustness
+
+- Git freshness check gracefully handles new repos where prime-context.md was never committed
+- Manual `/prime` now uses same reference-based format as auto-prime (~50-80 lines)
+
+---
+
 ## [2.0.1] - 2025-01-22
 
 ### 🔧 Fixed

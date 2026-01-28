@@ -12,6 +12,84 @@ Transform a feature request into a **comprehensive implementation plan** through
 
 ## Planning Process
 
+### Phase 0: Auto-Prime (Silent, Automatic)
+
+**This phase runs automatically before planning begins. No user action required.**
+
+**Purpose:** Ensure codebase context is loaded and fresh before planning starts.
+
+**How it works:**
+
+1. **Check for existing context:** Look for `.claude/agents/context/prime-context.md`
+2. **If missing:** Run a full prime scan silently (analyze structure, patterns, tech stack)
+3. **If exists, check freshness:**
+   - Read the `Last Updated` timestamp from the context file
+   - Check git changes since last prime (gracefully handles missing file):
+     ```bash
+     # Returns empty if file was never committed (new projects)
+     LAST_COMMIT=$(git log -1 --format=%H -- .claude/agents/context/prime-context.md 2>/dev/null || echo "")
+     if [ -n "$LAST_COMMIT" ]; then
+       git diff --stat "$LAST_COMMIT" HEAD
+     fi
+     ```
+   - **Freshness thresholds** (configurable in CLAUDE.md):
+     - Default: >20 files changed OR context >7 days old → re-scan
+     - Override via CLAUDE.md: `prime_max_age_days: N` and `prime_max_changed_files: N`
+4. **If fresh:** Skip, proceed directly to Phase 1
+
+**Auto-Prime Scan (when triggered):**
+
+```
+Silently performs:
+1. git ls-files → Map project structure
+2. Read CLAUDE.md + rules/ → Project principles & constraints
+3. Read .claude/memory/constitution.md (if exists) → Legacy project principles (backward compatibility)
+4. Detect tech stack from pom.xml / package.json / pyproject.toml
+5. Find key patterns: controllers, services, repositories, components
+6. Save reference-based context to .claude/agents/context/prime-context.md
+```
+
+**Backward Compatibility:** If `.claude/memory/constitution.md` exists (from v2.x), it will be read and its principles merged with CLAUDE.md + rules/. New projects should use CLAUDE.md + rules/ directly.
+
+**Context Format (reference-based, ~50 lines):**
+
+```markdown
+# Prime Context
+
+**Project:** {name}
+**Last Updated:** {timestamp}
+**Tech Stack:** {backend} + {frontend} + {database}
+
+## Where to Find Patterns
+
+### REST Controllers
+**Example:** `backend/src/main/java/.../UserController.java:1-45`
+**Find all:** `grep -r "@RestController" backend/src/main/java/`
+
+### Services
+**Example:** `backend/src/main/java/.../UserService.java:1-60`
+**Find all:** `grep -r "@Service" backend/src/main/java/`
+
+### React Components
+**Example:** `frontend/src/components/UserList.tsx:1-80`
+**Find all:** `grep -r "export function" frontend/src/components/`
+
+## Key Files
+| Purpose | File |
+|---------|------|
+| Config  | `backend/src/main/resources/application.properties` |
+| Routes  | `frontend/src/App.tsx` |
+
+## Project Principles
+Source: `.claude/CLAUDE.md` + `.claude/rules/` (loaded automatically by Claude Code)
+```
+
+**Why reference-based?** Full code dumps waste ~2000 tokens. References let Claude read files on-demand during planning, saving context for actual planning work.
+
+**Note:** Users can still run `/piv-speckit:prime` manually to force a context refresh at any time.
+
+---
+
 ### Phase 1: Feature Understanding
 
 **Deep Feature Analysis:**

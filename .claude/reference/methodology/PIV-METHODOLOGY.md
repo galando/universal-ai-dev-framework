@@ -54,93 +54,80 @@ PIV enforces **strict Test-Driven Development** throughout the Implement phase:
 
 ---
 
-## Phase 0: Constitution (One-Time Setup)
+## Phase 0: Auto-Prime (Automatic)
 
-**Goal:** Define project principles that guide all future AI decisions.
+**Goal:** Ensure codebase context is loaded and fresh before any planning or implementation.
 
-### What is a Constitution?
+### What Changed (v3.0)
 
-A **constitution** is a one-time document that defines:
-- **Project purpose**: What this project is and why it exists
-- **Core principles**: Quality standards, testing requirements, code style
-- **Technology stack**: Frameworks, languages, databases
-- **Technical constraints**: What to use and what to avoid
-- **Development guidelines**: Git workflow, code review, testing
-- **Security requirements**: Security standards and practices
-- **Performance requirements**: Performance targets
+Previously, PIV required three manual steps before planning:
+1. `/piv-speckit:constitution` — define project principles
+2. `/piv-speckit:prime` — scan codebase context
+3. `/piv-speckit:plan-feature` — plan the feature
 
-### When to Create
+Now, **plan-feature auto-primes silently**. Project principles come from `.claude/CLAUDE.md` + `.claude/rules/` (which Claude Code loads automatically). No manual setup required.
 
-- **Start of project**: Create before any feature work
-- **Project pivot**: Update when major direction changes
-- **New team member**: Helps onboard quickly
+| Before (v2.x) | After (v3.0) |
+|----------------|--------------|
+| `/piv-speckit:constitution` (manual, one-time) | Removed — use CLAUDE.md + rules/ |
+| `/piv-speckit:prime` (manual, every session) | Optional — auto-runs inside plan-feature |
+| `/piv-speckit:plan-feature` | **Single entry point** — just start here |
 
-### Commands
+### How Auto-Prime Works
 
-```
-/piv-speckit:constitution
-```
+When `/piv-speckit:plan-feature` runs, it silently checks:
 
-### Artifacts Created
+1. **Context exists?** Look for `.claude/agents/context/prime-context.md`
+2. **Context fresh?** Check age and git changes since last prime
+   - Default thresholds: >7 days old OR >20 files changed → re-scan
+   - Configurable via CLAUDE.md: `prime_max_age_days` and `prime_max_changed_files`
+3. **If missing or stale:** Runs a full prime scan automatically
+4. **If fresh:** Skips, proceeds to planning
 
-- `.claude/memory/constitution.md` - Project constitution
+**Note:** The git freshness check gracefully handles new projects where prime-context.md has never been committed.
 
-### How It's Used
+### What Gets Scanned
 
-The constitution is automatically read during:
-- `/piv-speckit:plan-feature` - Planning respects constitution principles
-- `/piv-speckit:prime` - Prime checks for constitution existence
+- Project structure via `git ls-files`
+- Tech stack from `pom.xml` / `package.json` / `pyproject.toml`
+- Key patterns: controllers, services, repositories, components
+- Project principles from `.claude/CLAUDE.md` + `.claude/rules/`
+- Legacy constitution from `.claude/memory/constitution.md` (if exists, for backward compatibility)
 
-### Success Criteria
+### Context Format
 
-- [ ] Constitution defines project purpose
-- [ ] Technology stack is documented
-- [ ] Core principles are clear
-- [ ] Constraints (what to use/avoid) are listed
-- [ ] Development guidelines are specified
+The auto-prime produces a **reference-based** context file (~50 lines) that points to files rather than dumping code. This saves ~50% tokens compared to the old monolithic format.
 
----
+### Manual Prime (Optional)
 
-## Phase 1: Prime
+Users can still run `/piv-speckit:prime` to force a full context refresh:
 
-**Goal: Load comprehensive codebase context**
-
-### What Happens
-- Claude Code analyzes the entire codebase structure
-- Identifies key patterns, conventions, and architecture
-- Loads project-specific rules and guidelines
-- Creates context artifacts for reference
-
-### When to Use
-- **Start of session**: Run before any work
-- **Context switch**: When switching between features
-- **After major changes**: When significant changes have been made
-- **New feature**: Before implementing new work
-
-### Commands
 ```
 /piv-speckit:prime
 ```
 
-### Artifacts Created
-- `.claude/agents/context/prime-context.md` - Comprehensive context document
+Use this when:
+- After major refactoring
+- Switching between projects
+- Debugging context issues
+- Wanting to inspect what Claude "sees"
 
-### What Gets Analyzed
-- Project structure and organization
-- Technology stack and frameworks
-- Coding conventions and patterns
-- Architecture and design patterns
-- Dependencies and integrations
-- Testing approach and coverage
-- **TDD patterns and compliance** - Identify if codebase follows RED-GREEN-REFACTOR cycle
-- Documentation and guides
+### Artifacts Created
+- `.claude/agents/context/prime-context.md` - Reference-based context document
+
+### Project Principles
+
+**Previously handled by constitution.md**, project principles are now defined in:
+- `.claude/CLAUDE.md` — project overview, tech stack, constraints
+- `.claude/rules/` — coding rules, TDD, security, API design, git workflow
+
+These files are **loaded automatically by Claude Code** at conversation start. No separate constitution step needed.
 
 ### Success Criteria
+- [ ] Context is automatically created/refreshed before planning
 - [ ] Claude can answer questions about codebase structure
-- [ ] Claude understands technology choices
-- [ ] Claude knows coding conventions
-- [ ] Claude identifies key files and their purposes
-- [ ] Context artifact is created and saved
+- [ ] Claude understands technology choices and conventions
+- [ ] No manual steps required before planning
 
 ---
 
@@ -1208,18 +1195,14 @@ Tracks:
 ### Standard Feature Development
 
 ```
-1. /piv-speckit:prime
+1. /piv-speckit:plan-feature "Add user authentication"
    │
-   ├─▶ Load codebase context
-   ├─▶ Create context artifact
-   │
-2. /piv-speckit:plan-feature "Add user authentication"
-   │
+   ├─▶ Auto-prime (silent — loads/refreshes context if needed)
    ├─▶ Analyze requirements
    ├─▶ Design approach
    ├─▶ Create plan artifact
    │
-3. /piv-speckit:execute
+2. /piv-speckit:execute
    │
    ├─▶ Implement from plan (following RED-GREEN-REFACTOR cycle)
    │   ├─▶ RED: Write failing test first
@@ -1235,7 +1218,7 @@ Tracks:
        └─▶ AUTOMATIC: /piv-speckit:execution-report
            └─▶ Generate execution report
 
-4. (Optional) /piv-speckit:learn 🆕
+3. (Optional) /piv-speckit:learn 🆕
    │
    ├─▶ Adaptive-learning skill suggests after code review
    ├─▶ Analyze code reviews for patterns
@@ -1268,16 +1251,13 @@ Tracks:
 ```
 Start
   │
-  ├─ New session or context switch?
-  │   └─ YES → Run PRIME
-  │
   ├─ Type of work?
   │   ├─ Simple bug fix or small tweak
   │   │   └─ Use RCA or implement directly
   │   │       └─ VALIDATE runs automatically
   │   │
   │   ├─ Complex feature or architectural change
-  │   │   └─ PLAN → EXECUTE
+  │   │   └─ PLAN (auto-primes) → EXECUTE
   │   │       └─ VALIDATE runs automatically
   │   │
   │   └─ Uncertain about complexity?
@@ -1292,25 +1272,23 @@ Start
 
 | Scenario | Approach |
 |----------|----------|
-| New session | Always Prime |
-| Context switch | Prime again |
 | Simple typo fix | Implement directly → Auto validate |
 | Add new field | Can skip planning → Implement → Auto validate |
-| New feature endpoint | Plan → Execute → Auto validate |
-| Refactor component | Plan → Execute → Auto validate |
-| Add new dependency | Plan → Execute → Auto validate |
+| New feature endpoint | Plan (auto-primes) → Execute → Auto validate |
+| Refactor component | Plan (auto-primes) → Execute → Auto validate |
+| Add new dependency | Plan (auto-primes) → Execute → Auto validate |
 | Database migration | Always plan → Execute → Auto validate |
 | Architecture change | Always plan → Execute → Auto validate |
+| Force context refresh | `/piv-speckit:prime` (optional, manual) |
 
 ---
 
 ## Best Practices
 
-### Prime Phase
-- **Be thorough**: Better to over-analyze than under-analyze
-- **Save context**: Always save the context artifact
-- **Update regularly**: Re-prime after major changes
-- **Ask questions**: Clarify ambiguities during prime
+### Context (Auto-Prime)
+- **Trust auto-prime**: Plan-feature handles context automatically
+- **Force refresh when needed**: Use `/piv-speckit:prime` after major refactoring
+- **Keep CLAUDE.md current**: It's your project's source of truth for principles
 
 ### Implement Phase (Planning)
 - **Think first**: Don't rush to implementation
@@ -1335,10 +1313,10 @@ Start
 
 ## Anti-Patterns to Avoid
 
-### ❌ Skipping Prime
+### ❌ Skipping Context
 **Problem**: Making changes without understanding context
 **Consequence**: Breaking existing patterns, introducing inconsistencies
-**Solution**: Always Prime at start of session
+**Solution**: Use `/piv-speckit:plan-feature` which auto-primes, or run `/piv-speckit:prime` manually
 
 ### ❌ Over-Planning
 **Problem**: Spending too much time planning simple changes
@@ -1399,7 +1377,7 @@ After `/piv-speckit:execute`:
 
 | Task | Manual | Automatic |
 |------|--------|-----------|
-| Prime | ✅ Required | - |
+| Prime | ✅ Optional (force refresh) | ✅ Auto-runs in plan-feature |
 | Plan | ✅ Required (complex work) | - |
 | Execute | ✅ Required | - |
 | Validate | ❌ Don't run manually | ✅ Runs after execute |
@@ -1410,11 +1388,11 @@ After `/piv-speckit:execute`:
 
 ## Tips for Success
 
-### For Effective Priming
-- Start with broad questions: "How is this codebase organized?"
-- Ask about patterns: "What are the key architectural patterns?"
-- Understand conventions: "What coding style is used?"
-- Identify rules: "What rules should I follow?"
+### For Effective Context
+- **Auto-prime handles it**: Just run `/piv-speckit:plan-feature` and context loads automatically
+- **Keep CLAUDE.md updated**: This is your project's source of truth
+- **Use rules/ for conventions**: Tech-specific rules auto-load based on file patterns
+- **Manual prime when needed**: Run `/piv-speckit:prime` after major refactoring
 
 ### For Effective Planning
 - State requirements clearly: "What exactly are we building?"
@@ -1589,19 +1567,19 @@ Is this a feature/enhancement?
 
 PIV is a comprehensive methodology for AI-assisted development:
 
-1. **Prime** - Understand the codebase before making changes
-2. **Implement** - Plan and execute features systematically
-   - **NEW:** Apply Pragmatic Programmer principles during planning
-   - **NEW:** Clarify ambiguities using AskUserQuestion before implementing
-3. **Simplify** - Optional cleanup to maintain code quality
-4. **Validate** - Automatic verification of quality
-   - **NEW:** All tests MUST pass (non-negotiable hard requirement)
-   - **NEW:** Test coverage ≥ 80% enforced
+1. **Plan** - Design approach with auto-prime context loading
+   - Apply Pragmatic Programmer principles during planning
+   - Clarify ambiguities using AskUserQuestion before implementing
+2. **Implement** - Execute plan with strict TDD (RED-GREEN-REFACTOR)
+3. **Validate** - Automatic verification of quality
+   - All tests MUST pass (non-negotiable)
+   - Test coverage ≥ 80% enforced
+4. **Simplify** - Optional cleanup to maintain code quality
 
-The methodology is lightweight enough for quick fixes but structured enough for complex features. The Pragmatic Programmer principles prevent technical debt, strategic clarification prevents rework, and the strict test passage ensures quality.
+The methodology is lightweight enough for quick fixes but structured enough for complex features. Context loads automatically — no manual setup steps required.
 
-**Key Differentiator**: Validation happens **automatically** as part of the execution flow, test passage is **mandatory**, and planning includes **quality principles** and **user clarification** to prevent issues before implementation begins.
+**Key Differentiator**: Zero-setup context loading (auto-prime), automatic validation, mandatory TDD, and quality principles built into the planning phase.
 
-**Remember**: The goal is not to follow the process rigidly, but to use it to produce better code more efficiently. Let the methodology serve you, not the other way around.
+**Quick start**: Just run `/piv-speckit:plan-feature "your feature"` — everything else is automatic.
 
-**When in doubt**: Prime → Plan (with PP review + clarification) → Execute → Validate (tests MUST pass). Simplification is optional and should be used based on code complexity and your judgment.
+**When in doubt**: Plan (auto-primes) → Execute → Validate (tests MUST pass). Simplification is optional.

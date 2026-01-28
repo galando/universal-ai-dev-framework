@@ -18,13 +18,14 @@ argument-hint: "<feature-name>"
 `Read .claude/reference/execution/plan-feature.md`
 
 Contains full planning methodology with phases:
+- **Phase 0: Auto-Prime** (automatic — loads/refreshes codebase context silently)
 - Phase 1: Feature Understanding
 - Phase 1.5: Pragmatic Programmer Principles Review
 - Phase 2: Codebase Intelligence Gathering
 - Phase 3: External Research & Documentation
 - Phase 4: Deep Strategic Thinking
 - Phase 5: Plan Structure Generation
-- **Phase 6: Output Split Artifacts** (NEW with Spec-Kit integration)
+- Phase 6: Output Split Artifacts
 
 ## Output Structure
 
